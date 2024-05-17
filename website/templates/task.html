@@ -1,16 +1,18 @@
 {% extends "base.html" %}
 {% block title %}Task{% endblock %}
 {% block content %}
-<div class="app">
-    <h1>Simple Quiz</h1>
-    <div class="quiz">
-        <h2 id="question">Question goes here</h2>
-        <div id="answer-buttons">
-            <button class="btn">Answer 1</button>
-            <button class="btn">Answer 2</button>
-            <button class="btn">Answer 3</button>
-            <button class="btn">Answer 1</button>
-        </div>
-    </div>
+<div class="start_btn">
+    <button>Start Quiz</button>
 </div>
+<div class="quiz_box">
+    <section>
+        <div class="que_text"></div>
+        <div class="option_list"></div>
+    </section>
+    <footer>
+        <button class="next_btn">Next Que</button>
+    </footer>
+</div>
+<script src="/static/js/questions.js"></script>
+<script src="/static/js/script.js"></script>
 {% endblock %}
