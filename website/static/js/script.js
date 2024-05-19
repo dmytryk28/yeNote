@@ -1,10 +1,12 @@
-const startBtn = document.querySelector(".start_btn button");
+const startBtn = document.querySelector(".start_button button");
 const quizBox = document.querySelector(".quiz_box");
 const optionList = document.querySelector(".option_list");
 const nextBtn = document.querySelector("footer .next_btn");
+const exitBtn = document.querySelector("footer .exit_btn");
 let index = 0;
 
 startBtn.onclick = () => {
+    clearScreen();
     quizBox.classList.add("activeQuiz");
     showQuestion();
 };
@@ -12,6 +14,14 @@ startBtn.onclick = () => {
 nextBtn.onclick = () => {
     showQuestion();
 };
+
+
+function clearScreen() {
+    const startButtonContainer = document.querySelector(".container-start-test");
+    const quizBox = document.querySelector(".quiz_box");
+    startButtonContainer.style.display = "none";
+    quizBox.style.display = "block";
+}
 
 function showQuestion() {
     document.querySelector(".que_text").innerHTML = `<span>${questions[index].question}</span>`;

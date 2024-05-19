@@ -1,93 +1,12 @@
+html {
+    scroll-behavior: smooth;
+}
+
 ::selection {
     color: #fff;
     background: #007bff;
 }
 
-.start_btn,
-.quiz_box {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
-    0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.quiz_box.activeQuiz {
-    opacity: 1;
-    z-index: 5;
-    pointer-events: auto;
-    transform: translate(-50%, -50%) scale(1);
-}
-
-.start_btn button {
-    font-size: 25px;
-    font-weight: 500;
-    color: #007bff;
-    padding: 15px 30px;
-    outline: none;
-    border: none;
-    border-radius: 5px;
-    background: #fff;
-    cursor: pointer;
-}
-
-.quiz_box {
-    width: 550px;
-    background: #fff;
-    border-radius: 5px;
-    transform: translate(-50%, -50%) scale(0.9);
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s ease;
-}
-
-.quiz_box header {
-    position: relative;
-    z-index: 2;
-    height: 70px;
-    padding: 0 30px;
-    background: #fff;
-    border-radius: 5px 5px 0 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0px 3px 5px 1px rgba(0, 0, 0, 0.1);
-}
-
-.quiz_box header .title {
-    font-size: 20px;
-    font-weight: 600;
-}
-
-section {
-    padding: 25px 30px 20px 30px;
-    background: #fff;
-}
-
-section .que_text {
-    font-size: 25px;
-    font-weight: 600;
-}
-
-section .option_list {
-    padding: 20px 0px;
-    display: block;
-}
-
-section .option_list .option {
-    background: aliceblue;
-    border: 1px solid #84c5fe;
-    border-radius: 5px;
-    padding: 8px 15px;
-    font-size: 17px;
-    margin-bottom: 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
 
 section .option_list .option:last-child {
     margin-bottom: 0px;
@@ -96,19 +15,19 @@ section .option_list .option:last-child {
 section .option_list .option:hover {
     color: #004085;
     background: #cce5ff;
-    border: 1px solid #b8daff;
+    border: 2px solid #b8daff;
 }
 
 section .option_list .option.correct {
     color: #155724;
     background: #d4edda;
-    border: 1px solid #c3e6cb;
+    border: 2px solid #155624;
 }
 
 section .option_list .option.incorrect {
     color: #721c24;
     background: #f8d7da;
-    border: 1px solid #f5c6cb;
+    border: 2px solid #711c24;
 }
 
 section .option_list .option.disabled {
@@ -151,4 +70,314 @@ footer button.show {
     opacity: 1;
     pointer-events: auto;
     transform: scale(1);
+}
+
+
+
+
+
+.desktop-1 .container-6, .container-6-1 {
+    width: 100%;
+}
+
+
+.desktop-1 .text, .text-1 {
+    display: inline-block;
+    flex: 1;
+    text-align: center;
+    overflow-wrap: break-word;
+    font-family: 'Space Grotesk';
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #132245;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.text-1 {
+    color: #E5EEFB;
+}
+
+.desktop-1 .important, .show-all-tests, .important-1-1 {
+    overflow-wrap: break-word;
+    font-family: 'Space Grotesk';
+    font-weight: 500;
+    font-size: 1.5rem;
+    color: #F0F4F9;
+}
+
+.important-1-1 {
+    color: #132245;
+}
+
+.text-head {
+    width: 55%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.desktop-1 .container-1, .container-2, .container-1-1, .start_button button{
+    flex: 1.5;
+    border-radius: 3rem;
+    background: #132245;
+    position: relative;
+    display: flex;
+    padding: 0.8rem 0;
+    width: 18.9rem;
+    height: fit-content;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.container-1-1 {
+    background: #E5EEFB;
+}
+
+.container-2 {
+    margin-top: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 90%;
+}
+
+.desktop-1 .container-6, .container-6-1 {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+.desktop-1 .rectangle-44 {
+    border-radius: 2.4rem;
+    background: #E5EEFB;
+    margin-bottom: 10px;
+    width: 18.9rem;
+    height: 15rem;
+}
+
+.desktop-1 .group-1 {
+    border-radius: 2.4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+    box-sizing: border-box;
+}
+
+.desktop-1 .container-2 {
+    margin-left: 0.1rem;
+    text-align: center;
+    overflow-wrap: break-word;
+    font-family: 'Space Grotesk';
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #FFFFFF;
+}
+
+.desktop-1 .group-5, .group-2 {
+    background: #132245;
+    position: relative;
+    margin-bottom: 15rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 3rem 5rem;
+    width: 100vw;
+    box-sizing: border-box;
+}
+
+.group-2 {
+    margin-bottom: 0;
+    align-items: center;
+}
+
+.desktop-1 .container-4 {
+    align-self: flex-start;
+    overflow-wrap: break-word;
+    font-family: 'Courier New';
+    font-weight: 400;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    color: #FFFFFF;
+}
+
+.desktop-1 .container-5 {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.desktop-1 .ellipse-2 {
+    margin: 0.8rem 0;
+    width: 5.3rem;
+    height: 5rem;
+}
+
+/*????????*/
+.container {
+    margin: 0;
+    padding: 0;
+}
+
+.desktop-1 .container-7 {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    margin-bottom: 10rem;
+}
+
+.desktop-1 .ye-note {
+    overflow-wrap: break-word;
+    font-family: 'Space Grotesk';
+    font-weight: 500;
+    font-size: 7rem;
+    color: #132245;
+}
+
+.desktop-1 .test-your-knowledge {
+    overflow-wrap: break-word;
+    font-family: 'Space Grotesk';
+    font-weight: 500;
+    font-size: 1.5rem;
+    color: #3E4349;
+    margin-bottom: 20px;
+}
+
+.desktop-1 .category {
+    overflow-wrap: break-word;
+    font-family: 'Space Grotesk';
+    margin-top: 10px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 1.3rem;
+    color: #ffffff;
+}
+
+.desktop-1, .desktop-2 {
+    background: linear-gradient(to bottom, #D9E5F5, #EBF3FF);
+    display: flex;
+    width: 100vw;
+    padding-top: 0.6rem;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vw;
+}
+
+.desktop-2 {
+    background: #132245;
+}
+
+
+
+
+.desktop-2 .container-start-test, .quiz_box {
+  border-radius: 48px;
+  background: #E5EEFB;
+  position: relative;
+    margin-top: 5rem;
+    padding: 3rem;
+    width: 100%;
+  display: flex;
+    flex-direction: column;
+height: fit-content;
+}
+
+.quiz_box {
+    transition: all 0.3s ease;
+}
+
+.test-name {
+    overflow-wrap: break-word;
+    font-family: 'Space Grotesk';
+    font-weight: 800;
+    font-size: 2.5rem;
+    color: #132244;
+    margin-bottom: 20px;
+}
+
+.description {
+    overflow-wrap: break-word;
+    font-family: 'Space Grotesk';
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: #132244;
+    margin-bottom: 4rem;
+}
+
+.start_button button{
+    overflow-wrap: break-word;
+    font-family: 'Space Grotesk';
+    font-weight: 500;
+    font-size: 1.5rem;
+    color: #F0F4F9;
+    margin: 0;
+}
+
+.quiz_box.activeQuiz {
+    opacity: 1;
+    z-index: 5;
+    pointer-events: auto;
+}
+
+section .que_text {
+    font-family: 'Space Grotesk';
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+section .option_list {
+    font-family: 'Space Grotesk';
+    padding: 20px 0px;
+    display: block;
+}
+
+section .option_list .option {
+    background: #E5EEFB;
+    border: 2px solid rgb(25, 47, 96);
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 17px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.desktop-2 .buttons {
+    margin-top: 30px;
+    height: fit-content;
+    font-family: 'Space Grotesk';
+    display: flex;
+    justify-content: flex-end
+}
+
+.next_btn, .exit_btn {
+    margin-top: 10px;
+    width: 15rem;
+    font-size: 1.5rem;
+    overflow-wrap: break-word;
+    font-weight: 500;
+    color: #F0F4F9;
+        border-radius: 3rem;
+    background: #132245;
+    position: relative;
+    display: flex;
+    padding: 1.2rem 0;
+    height: fit-content;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
 }

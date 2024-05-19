@@ -1,18 +1,48 @@
 {% extends "base.html" %}
 {% block title %}Task{% endblock %}
 {% block content %}
-<div class="start_btn">
-    <button>Start Quiz</button>
+<div class="desktop-2">
+    <div class="container-6-1">
+        <img class="container-4" src="поки нема"/>
+        <div class="text-head">
+            <div class="text-1">
+                Text
+            </div>
+            <div class="text-1">
+                Text
+            </div>
+            <div class="container-1-1">
+            <span class="important-1-1">
+            Important
+            </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-start-test">
+        <span class="test-name">
+        Name of category or test
+        </span>
+        <span class="description">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </span>
+        <div class="start_button">
+            <button>Start Quiz</button>
+        </div>
+    </div>
+    <div class="quiz_box" style="display: none;">
+        <section>
+            <div class="que_text"></div>
+            <div class="option_list"></div>
+        </section>
+        <footer class="buttons">
+<!--            <button class="exit_btn">End</button>-->
+            <button class="next_btn">Next</button>
+        </footer>
+    </div>
+
 </div>
-<div class="quiz_box">
-    <section>
-        <div class="que_text"></div>
-        <div class="option_list"></div>
-    </section>
-    <footer>
-        <button class="next_btn">Next Que</button>
-    </footer>
-</div>
+
 <script src="/static/js/questions.js"></script>
 <script src="/static/js/script.js"></script>
 {% endblock %}
