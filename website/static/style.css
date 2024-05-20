@@ -381,3 +381,43 @@ section .option_list .option {
     justify-content: center;
     align-items: center;
 }
+
+.piano {
+    display: flex;
+    position: relative;
+}
+
+.key {
+    width: 40px;
+    height: 200px;
+    border: 1px solid #000;
+    box-shadow: 0 3px #777;
+    cursor: pointer;
+    user-select: none;
+}
+
+.key.white {
+    background-color: #fff;
+    z-index: 1;
+}
+
+.key.black {
+    background-color: #000;
+    width: 30px;
+    height: 120px;
+    margin-left: -15px;
+    margin-right: -15px;
+    z-index: 2;
+    position: relative;
+    left: 15px;
+    transform: translateX(-50%);
+}
+
+.key.black:active {
+    transform: translateX(-50%);
+}
+
+.key:active {
+    box-shadow: 0 0 #777;
+    transform: translateY(4px);
+}
