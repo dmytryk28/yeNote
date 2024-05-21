@@ -15,6 +15,16 @@ nextBtn.onclick = () => {
     showQuestion();
 };
 
+document.getElementById('piano-down').addEventListener('click', function() {
+    const pianoContainer = document.querySelector('.piano-container');
+
+    // Переключаємо клас 'active' для плавного виїжджання/заїжджання
+    if (pianoContainer.style.maxHeight) {
+        pianoContainer.style.maxHeight = null;
+    } else {
+        pianoContainer.style.maxHeight = pianoContainer.scrollHeight + "px";
+    }
+});
 
 function clearScreen() {
     const startButtonContainer = document.querySelector(".container-start-test");

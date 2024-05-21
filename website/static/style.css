@@ -73,9 +73,6 @@ footer button.show {
 }
 
 
-
-
-
 .desktop-1 .container-6, .container-6-1 {
     width: 100%;
 }
@@ -92,6 +89,8 @@ footer button.show {
     color: #132245;
     padding-right: 20px;
     padding-left: 20px;
+    background-color: unset;
+    border: unset;
 }
 
 .text-1 {
@@ -117,7 +116,7 @@ footer button.show {
     align-items: center;
 }
 
-.desktop-1 .container-1, .container-2, .container-1-1, .start_button button{
+.desktop-1 .container-1, .container-2, .container-1-1, .start_button button {
     flex: 1.5;
     border-radius: 3rem;
     background: #132245;
@@ -279,18 +278,16 @@ footer button.show {
 }
 
 
-
-
 .desktop-2 .container-start-test, .quiz_box {
-  border-radius: 48px;
-  background: #E5EEFB;
-  position: relative;
-    margin-top: 5rem;
+    border-radius: 48px;
+    background: #E5EEFB;
+    position: relative;
+    margin-top: 3rem;
     padding: 3rem;
     width: 100%;
-  display: flex;
+    display: flex;
     flex-direction: column;
-height: fit-content;
+    height: fit-content;
 }
 
 .quiz_box {
@@ -315,7 +312,7 @@ height: fit-content;
     margin-bottom: 4rem;
 }
 
-.start_button button{
+.start_button button {
     overflow-wrap: break-word;
     font-family: 'Space Grotesk';
     font-weight: 500;
@@ -371,7 +368,7 @@ section .option_list .option {
     overflow-wrap: break-word;
     font-weight: 500;
     color: #F0F4F9;
-        border-radius: 3rem;
+    border-radius: 3rem;
     background: #132245;
     position: relative;
     display: flex;
@@ -382,9 +379,23 @@ section .option_list .option {
     align-items: center;
 }
 
+.piano-container {
+    display: flex;
+    overflow: hidden;
+    margin-top: 20px;
+    max-height: 0;
+    transition: max-height 0.5s ease;
+    width: 100%;
+}
+
+.piano-container.active {
+    max-height: fit-content; /* Задайте відповідне максимальне значення висоти, яке дозволяє повністю відобразити піаніно */
+}
+
 .piano {
     display: flex;
     position: relative;
+    width: 100%;
 }
 
 .key {
