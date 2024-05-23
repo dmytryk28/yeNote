@@ -1,6 +1,6 @@
 let questions = [
     {
-        question: "Який акорд ви чуєте?",
+        question: "Який акорд Ви чуєте?",
         answer: 0,
         options: [
             "Мінор",

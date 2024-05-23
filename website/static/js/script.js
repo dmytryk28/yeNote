@@ -3,6 +3,7 @@ const quizBox = document.querySelector(".quiz_box");
 const optionList = document.querySelector(".option_list");
 const nextBtn = document.querySelector("footer .next_btn");
 const exitBtn = document.querySelector("footer .exit_btn");
+const repeatBtn = document.querySelector(".repeat_btn");
 let index = 0;
 let currentQue = null;
 let currentNotes = null;
@@ -17,10 +18,12 @@ nextBtn.onclick = () => {
     showQuestion();
 };
 
+repeatBtn.onclick = () => {
+    playNotes(true, currentNotes);
+};
+
 document.getElementById('piano-down').addEventListener('click', function() {
     const pianoContainer = document.querySelector('.piano-container');
-
-    // Переключаємо клас 'active' для плавного виїжджання/заїжджання
     if (pianoContainer.style.maxHeight) {
         pianoContainer.style.maxHeight = null;
     } else {
@@ -36,6 +39,10 @@ function clearScreen() {
 }
 
 function showQuestion() {
+    const allKeys = document.querySelectorAll('.key');
+    allKeys.forEach(key => {
+        key.classList.remove('correct', 'incorrect');
+    });
     currentQue = questions[index];
     generateQuestion();
     document.querySelector(".que_text").innerHTML = `<span>${currentQue.question}</span>`;

@@ -1,5 +1,6 @@
-html {
+body {
     scroll-behavior: smooth;
+    font-family: 'Montserrat Alternates', sans-serif;
 }
 
 ::selection {
@@ -30,19 +31,6 @@ section .option_list .option.incorrect {
     border: 2px solid #711c24;
 }
 
-.key.correct {
-    color: #155724;
-    background-color: #d4edda;
-    border: 2px solid #155624;
-    z-index: 0;
-}
-
-.key.incorrect {
-    color: #721c24;
-    background-color: #f8d7da;
-    border: 2px solid #711c24;
-    z-index: 0;
-}
 
 section .option_list .option.disabled {
     pointer-events: none;
@@ -97,9 +85,8 @@ footer button.show {
     flex: 1;
     text-align: center;
     overflow-wrap: break-word;
-    font-family: 'Space Grotesk';
     font-weight: 400;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     color: #132245;
     padding-right: 20px;
     padding-left: 20px;
@@ -113,11 +100,11 @@ footer button.show {
 
 .desktop-1 .important, .show-all-tests, .important-1-1 {
     overflow-wrap: break-word;
-    font-family: 'Space Grotesk';
     font-weight: 500;
     font-size: 1.5rem;
     color: #F0F4F9;
 }
+
 
 .important-1-1 {
     color: #132245;
@@ -186,7 +173,6 @@ footer button.show {
     margin-left: 0.1rem;
     text-align: center;
     overflow-wrap: break-word;
-    font-family: 'Space Grotesk';
     font-weight: 400;
     font-size: 1.5rem;
     color: #FFFFFF;
@@ -212,7 +198,6 @@ footer button.show {
 .desktop-1 .container-4 {
     align-self: flex-start;
     overflow-wrap: break-word;
-    font-family: 'Courier New';
     font-weight: 400;
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
@@ -258,19 +243,17 @@ footer button.show {
 
 .desktop-1 .test-your-knowledge {
     overflow-wrap: break-word;
-    font-family: 'Space Grotesk';
     font-weight: 500;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #3E4349;
     margin-bottom: 20px;
 }
 
 .desktop-1 .category {
     overflow-wrap: break-word;
-    font-family: 'Space Grotesk';
     margin-top: 10px;
     text-align: center;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 1.3rem;
     color: #ffffff;
 }
@@ -310,7 +293,6 @@ footer button.show {
 
 .test-name {
     overflow-wrap: break-word;
-    font-family: 'Space Grotesk';
     font-weight: 800;
     font-size: 2.5rem;
     color: #132244;
@@ -319,7 +301,6 @@ footer button.show {
 
 .description {
     overflow-wrap: break-word;
-    font-family: 'Space Grotesk';
     font-weight: 500;
     font-size: 1.2rem;
     color: #132244;
@@ -328,7 +309,6 @@ footer button.show {
 
 .start_button button {
     overflow-wrap: break-word;
-    font-family: 'Space Grotesk';
     font-weight: 500;
     font-size: 1.5rem;
     color: #F0F4F9;
@@ -342,14 +322,14 @@ footer button.show {
 }
 
 section .que_text {
-    font-family: 'Space Grotesk';
     font-size: 2rem;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 section .option_list {
-    font-family: 'Space Grotesk';
     padding: 20px 0px;
+    font-weight: 500;
+    color: #132245;
     display: block;
 }
 
@@ -368,9 +348,7 @@ section .option_list .option {
 }
 
 .desktop-2 .buttons {
-    margin-top: 30px;
     height: fit-content;
-    font-family: 'Space Grotesk';
     display: flex;
     justify-content: flex-end
 }
@@ -403,7 +381,7 @@ section .option_list .option {
 }
 
 .piano-container.active {
-    max-height: fit-content; /* Задайте відповідне максимальне значення висоти, яке дозволяє повністю відобразити піаніно */
+    max-height: fit-content;
 }
 
 .piano {
@@ -445,4 +423,27 @@ section .option_list .option {
 .key:active {
     box-shadow: 0 0 #777;
     transform: translateY(4px);
+}
+
+.key.correct {
+    color: #155724;
+    background-color: #d4edda;
+    border: 2px solid #155624;
+}
+
+.key.incorrect {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 2px solid #711c24;
+}
+
+.repeat_btn {
+    padding: 0 12px;
+    /*width: 80px;*/
+    font-size: 1.5rem;
+    color: white;
+    background-color: #132244;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
