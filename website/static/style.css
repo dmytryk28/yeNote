@@ -30,6 +30,20 @@ section .option_list .option.incorrect {
     border: 2px solid #711c24;
 }
 
+.key.correct {
+    color: #155724;
+    background-color: #d4edda;
+    border: 2px solid #155624;
+    z-index: 0;
+}
+
+.key.incorrect {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 2px solid #711c24;
+    z-index: 0;
+}
+
 section .option_list .option.disabled {
     pointer-events: none;
 }
