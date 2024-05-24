@@ -14,7 +14,7 @@ function playSound(note) {
     }, 500); // Час перед згасанням
 }
 
-var keys = document.querySelectorAll('.key');
+const keys = document.querySelectorAll('.key');
 keys.forEach(function (key) {
     key.addEventListener('click', function () {
         let note = this.getAttribute('data-note');

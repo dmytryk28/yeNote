@@ -17,7 +17,7 @@ const questions = [
             "Велика септима",
             "Октава"
         ],
-        generating: () => {
+        generate: () => {
             const base = Math.floor(Math.random() * 60) + 1;
             let interval = Math.floor(Math.random() * 12) + 1;
             if (base + interval > 61) interval = 61 - base;
@@ -30,16 +30,39 @@ const questions = [
         name: "Мінор чи мажор?",
         description: "Ви почуєте 3 ноти, що складають собою акорд. Потрібно визначити, який він: мінорний чи мажорний.",
         question: "Який акорд звучить?",
-        options: [
-            "Мінор",
-            "Мажор"
-        ],
-        generating: () => {
+        options: ["Мінор", "Мажор"],
+        generate: () => {
             const base = Math.floor(Math.random() * 54) + 1;
             const major = Number(Math.random() >= 0.5);
             currentNotes = [base, 3 + base + major, 7 + base];
             playNotes(true, currentNotes);
             currentAnswer = major;
+        }
+    },
+    {
+        name: "Діатонічні лади",
+        description: "Ви почуєте 8 нот, що складають собою лад. Останній ступінь дублює перший на октаву вище. Потрібно визначити, який із 7 діатонічних ладів звучить.",
+        question: "Який діатонічний лад звучить?",
+        options: [
+            "Йонійський",
+            "Дорійський",
+            "Фригійський",
+            "Лідійський",
+            "Міксолідійський",
+            "Еолійський",
+            "Локрійський"
+        ],
+        generate: () => {
+            currentAnswer = Math.floor(Math.random() * 7);
+            const semi1 = 6 - currentAnswer;
+            const semi2 = semi1 + (currentAnswer > 2 ? 3 : -4);
+            let next = Math.floor(Math.random() * 49) + 1;
+            currentNotes = [next];
+            for (let i = 0; i < 7; i++) {
+                next += i === semi1 || i === semi2 ? 1 : 2;
+                currentNotes.push(next);
+            }
+            playNotes(true, currentNotes);
         }
     }
 ];

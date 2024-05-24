@@ -19,12 +19,17 @@ startBtn.onclick = () => {
 };
 
 nextBtn.onclick = () => {
+    keys.forEach(key => {
+        key.classList.remove('correct', 'incorrect');
+    });
     showQuestion();
 };
 
-repeatSimultaneouslyBtn.onclick = () => {
-    playNotes(false, currentNotes);
-};
+if (taskNum !== 2)
+    repeatSimultaneouslyBtn.onclick = () => {
+        playNotes(false, currentNotes);
+    };
+else repeatSimultaneouslyBtn.style.display = 'none';
 
 repeatSequentlyBtn.onclick = () => {
     playNotes(true, currentNotes);
@@ -47,11 +52,7 @@ function clearScreen() {
 }
 
 function showQuestion() {
-    const allKeys = document.querySelectorAll('.key');
-    allKeys.forEach(key => {
-        key.classList.remove('correct', 'incorrect');
-    });
-    currentQue.generating();
+    currentQue.generate();
     document.querySelector(".que_text").innerHTML = `<span>${currentQue.question}</span>`;
     optionList.innerHTML = currentQue.options.map((option, i) =>
         `<div class="option" onclick="optionSelected(this, ${i})"><span>${option}</span></div>`).join('');
