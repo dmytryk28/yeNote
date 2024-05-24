@@ -1,5 +1,5 @@
 function playSound(note) {
-    let audio = new Audio('static/notes/' + note + '.wav');
+    let audio = new Audio('/static/notes/' + note + '.wav');
     audio.volume = 1; // Встановлюємо гучність на максимум
     audio.play();
     setTimeout(function () {
