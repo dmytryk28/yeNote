@@ -437,13 +437,60 @@ section .option_list .option {
     border: 2px solid #711c24;
 }
 
-.repeat_btn {
+.repeat_simultaneously_btn {
     padding: 0 12px;
-    /*width: 80px;*/
+    height: 48px;
     font-size: 1.5rem;
     color: white;
     background-color: #132244;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    display: flex;
+    align-items: center; /* Center the icon vertically */
+    justify-content: center;
+}
+
+.repeat_sequently_btn {
+    position: relative;
+    padding: 0 12px;
+    font-size: 1.5rem;
+    color: white;
+    background-color: #132244;
+    border: none;
+    border-radius: 5px 0 5px 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    height: 40px;
+    align-self: flex-end;
+}
+
+.repeat_sequently_btn .inner-icon {
+    display: flex;
+    align-items: center;
+    height: 32px;
+}
+
+.repeat_sequently_btn::before,
+.repeat_sequently_btn::after {
+    content: "";
+    position: absolute;
+    height: 4px;
+    background-color: #132244;
+    z-index: -1;
+    align-self: flex-end;
+    right: 0;
+}
+
+.repeat_sequently_btn::before {
+    top: -4px;
+    width: 67%;
+    border-top-left-radius: 5px;
+}
+
+.repeat_sequently_btn::after {
+    top: -8px;
+    width: 33%;
+    border-radius: 5px 5px 0 0;
 }

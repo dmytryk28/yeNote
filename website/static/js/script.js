@@ -3,7 +3,8 @@ const quizBox = document.querySelector(".quiz_box");
 const optionList = document.querySelector(".option_list");
 const nextBtn = document.querySelector("footer .next_btn");
 const exitBtn = document.querySelector("footer .exit_btn");
-const repeatBtn = document.querySelector(".repeat_btn");
+const repeatSimultaneouslyBtn = document.querySelector(".repeat_simultaneously_btn");
+const repeatSequentlyBtn = document.querySelector(".repeat_sequently_btn");
 let index = 0;
 let currentQue = null;
 let currentNotes = null;
@@ -18,7 +19,11 @@ nextBtn.onclick = () => {
     showQuestion();
 };
 
-repeatBtn.onclick = () => {
+repeatSimultaneouslyBtn.onclick = () => {
+    playNotes(false, currentNotes);
+};
+
+repeatSequentlyBtn.onclick = () => {
     playNotes(true, currentNotes);
 };
 
