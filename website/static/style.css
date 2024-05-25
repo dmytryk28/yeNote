@@ -161,6 +161,7 @@ footer button.show {
 }
 
 .desktop-1 .group-1 {
+    cursor: pointer;
     border-radius: 2.4rem;
     display: flex;
     flex-direction: column;

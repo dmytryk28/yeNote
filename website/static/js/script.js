@@ -1,3 +1,11 @@
+const groupElements = document.querySelectorAll('.group-1');
+groupElements.forEach(element => {
+    const id = element.getAttribute('id');
+    element.addEventListener('click', () => {
+        window.location.href = `/task/${id}`;
+    });
+});
+
 const startBtn = document.querySelector(".start_button button");
 const quizBox = document.querySelector(".quiz_box");
 const optionList = document.querySelector(".option_list");
@@ -11,6 +19,8 @@ document.querySelector(".test-name").textContent = currentQue.name;
 document.querySelector(".description").textContent = currentQue.description;
 let currentAnswer = null;
 let currentNotes = null;
+
+
 
 startBtn.onclick = () => {
     clearScreen();
