@@ -73,7 +73,7 @@ const questions = [
         generate: () => {
             const notation = document.getElementById('notation');
             notation.innerHTML = ``;
-            currentAnswer = Math.floor(Math.random() * 61) + 1;
+            currentAnswer = Math.floor(Math.random() * 61) + 1;;
             const note = document.querySelector(`.key:nth-child(${currentAnswer})`).getAttribute('data-note')
             let noteChars = note.split('');
             noteChars[0] = noteChars[0].toLowerCase();
@@ -87,9 +87,9 @@ const questions = [
             noteChars.splice(noteChars.length - 1, 0, '/');
             const {Renderer, Stave, StaveNote, Voice, Formatter, Accidental,Beam} = Vex.Flow;
             const renderer = new Renderer(notation, Renderer.Backends.SVG);
-            renderer.resize(100, 200);
+            renderer.resize(450, 160);
             const context = renderer.getContext();
-            const stave = new Stave(10, 40, 80);
+            const stave = new Stave(50, 50, 450);
             const clef = currentAnswer > 24 ? 'treble' : 'bass';
             stave.addClef(clef);
             stave.setContext(context).draw();
@@ -102,6 +102,7 @@ const questions = [
             const beams = Beam.generateBeams([staveNote]);
             Formatter.FormatAndDraw(context, stave, [staveNote]);
             beams.forEach(b => b.setContext(context).draw());
+            document.getElementsByTagName('svg').item(0).style.scale = '1.3';
         }
     }
 ];
