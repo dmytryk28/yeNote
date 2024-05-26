@@ -6,20 +6,20 @@ groupElements.forEach(element => {
     });
 });
 
+const taskNum = Number(document.querySelector(".container-start-test").getAttribute('data-task-num'));
+const withOptions = taskNum < 3;
 const startBtn = document.querySelector(".start_button button");
 const quizBox = document.querySelector(".quiz_box");
-const optionList = document.querySelector(".option_list");
+const optionList = document.querySelector(withOptions ? ".option_list" : ".piano");
 const nextBtn = document.querySelector("footer .next_btn");
 const exitBtn = document.querySelector("footer .exit_btn");
 const repeatSimultaneouslyBtn = document.querySelector(".repeat_simultaneously_btn");
 const repeatSequentlyBtn = document.querySelector(".repeat_sequently_btn");
-const taskNum = Number(document.querySelector(".container-start-test").getAttribute('data-task-num'));
 const currentQue = questions[taskNum];
 document.querySelector(".test-name").textContent = currentQue.name;
 document.querySelector(".description").textContent = currentQue.description;
 let currentAnswer = null;
 let currentNotes = null;
-
 
 
 startBtn.onclick = () => {
@@ -35,15 +35,17 @@ nextBtn.onclick = () => {
     showQuestion();
 };
 
-if (taskNum !== 2)
+if (taskNum < 2)
     repeatSimultaneouslyBtn.onclick = () => {
         playNotes(false, currentNotes);
     };
 else repeatSimultaneouslyBtn.style.display = 'none';
 
-repeatSequentlyBtn.onclick = () => {
-    playNotes(true, currentNotes);
-};
+if (taskNum < 3)
+    repeatSequentlyBtn.onclick = () => {
+        playNotes(true, currentNotes);
+    };
+else repeatSequentlyBtn.style.display = 'none';
 
 document.getElementById('piano-down').addEventListener('click', function () {
     const pianoContainer = document.querySelector('.piano-container');
@@ -63,21 +65,27 @@ function clearScreen() {
 
 function showQuestion() {
     currentQue.generate();
-    document.querySelector(".que_text").innerHTML = `<span>${currentQue.question}</span>`;
-    optionList.innerHTML = currentQue.options.map((option, i) =>
-        `<div class="option" onclick="optionSelected(this, ${i})"><span>${option}</span></div>`).join('');
     nextBtn.classList.remove("show");
+    document.querySelector(".que_text").innerHTML = `<span>${currentQue.question}</span>`;
+    if (withOptions) {
+        optionList.innerHTML = currentQue.options.map((option, i) =>
+        `<div class="option" onclick="optionSelected(this, ${i})"><span>${option}</span></div>`).join('');
+    }
+    else for (let i = 1; i <= 61; i++) {
+        let child = document.querySelector(`.key:nth-child(${i})`);
+        child.onclick = () => optionSelected(child, i);
+    }
 }
 
 function optionSelected(answer, userAns) {
     let correctAns = currentAnswer;
     const allOptions = optionList.children;
-    answer.classList.add(userAns == correctAns ? "correct" : "incorrect");
-    currentNotes.forEach(num => {
-        document.querySelector(`.key:nth-child(${num})`).classList.add(userAns == correctAns ? "correct" : "incorrect")
-    })
-    if (userAns != correctAns)
-        allOptions[correctAns].classList.add("correct");
+    answer.classList.add(userAns === correctAns ? "correct" : "incorrect");
+    if (withOptions) currentNotes.forEach(num => {
+        document.querySelector(`.key:nth-child(${num})`).classList.add(userAns === correctAns ? "correct" : "incorrect")
+    });
+    if (userAns !== correctAns)
+        allOptions[correctAns - !withOptions].classList.add("correct");
     Array.from(allOptions).forEach(option => option.classList.add("disabled"));
     nextBtn.classList.add("show");
 }

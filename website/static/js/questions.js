@@ -64,5 +64,44 @@ const questions = [
             }
             playNotes(true, currentNotes);
         }
+    },
+    {
+        name: "Нота на нотному стані",
+        description: "Ви побачите нотний стан зі скрипковим або басовим ключем і однією нотою. Потрібно визначити, яку ноту зображено та натиснути відповідну клавішу піаніно.",
+        question: "Зіграйте цю ноту на піаніно:",
+        options: null,
+        generate: () => {
+            const notation = document.getElementById('notation');
+            notation.innerHTML = ``;
+            currentAnswer = Math.floor(Math.random() * 61) + 1;
+            const note = document.querySelector(`.key:nth-child(${currentAnswer})`).getAttribute('data-note')
+            let noteChars = note.split('');
+            noteChars[0] = noteChars[0].toLowerCase();
+            const isBlack = noteChars.length === 3;
+            if (isBlack) {
+                const change = Math.random() >= 0.5;
+                noteChars[1] = change ? 'b' : '#';
+                if (change) noteChars[0] = noteChars[0] === 'g' ? 'a'
+                    : String.fromCharCode(noteChars[0].charCodeAt(0) + 1);
+            }
+            noteChars.splice(noteChars.length - 1, 0, '/');
+            const {Renderer, Stave, StaveNote, Voice, Formatter, Accidental,Beam} = Vex.Flow;
+            const renderer = new Renderer(notation, Renderer.Backends.SVG);
+            renderer.resize(100, 200);
+            const context = renderer.getContext();
+            const stave = new Stave(10, 40, 80);
+            const clef = currentAnswer > 24 ? 'treble' : 'bass';
+            stave.addClef(clef);
+            stave.setContext(context).draw();
+            let staveNote = new StaveNote({
+                keys: [noteChars.join('')],
+                duration: 'q',
+                clef: clef
+            });
+            if (isBlack) staveNote.addModifier(new Accidental(noteChars[1]), 0);
+            const beams = Beam.generateBeams([staveNote]);
+            Formatter.FormatAndDraw(context, stave, [staveNote]);
+            beams.forEach(b => b.setContext(context).draw());
+        }
     }
 ];
