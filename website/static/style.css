@@ -1,4 +1,18 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html{
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+}
+
 body {
+    background: linear-gradient(to bottom, #D9E5F5, #EBF3FF);
     scroll-behavior: smooth;
     font-family: 'Montserrat Alternates', sans-serif;
 }
@@ -74,13 +88,29 @@ footer button.show {
     transform: scale(1);
 }
 
+header {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 10px;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    background-color: unset;
+}
 
-.desktop-1 .container-6, .container-6-1 {
+
+header .task {
+    background-color: #132245;
+}
+
+.container-6 {
     width: 100%;
 }
 
 
-.desktop-1 .text, .text-1 {
+.text {
     display: inline-block;
     flex: 1;
     text-align: center;
@@ -94,11 +124,11 @@ footer button.show {
     border: unset;
 }
 
-.text-1 {
+.task .text {
     color: #E5EEFB;
 }
 
-.desktop-1 .important, .show-all-tests, .important-1-1 {
+.important, .show-all-tests, .task .important {
     overflow-wrap: break-word;
     font-weight: 500;
     font-size: 1.5rem;
@@ -106,7 +136,7 @@ footer button.show {
 }
 
 
-.important-1-1 {
+.task .important {
     color: #132245;
 }
 
@@ -117,7 +147,7 @@ footer button.show {
     align-items: center;
 }
 
-.desktop-1 .container-1, .container-2, .container-1-1, .start_button button {
+.container-1, .container-2, .start_button button {
     flex: 1.5;
     border-radius: 3rem;
     background: #132245;
@@ -132,7 +162,7 @@ footer button.show {
     margin-left: 20px;
 }
 
-.container-1-1 {
+.task .container-1 {
     background: #E5EEFB;
 }
 
@@ -143,7 +173,7 @@ footer button.show {
     width: 90%;
 }
 
-.desktop-1 .container-6, .container-6-1 {
+.container-6 {
     width: 100%;
     height: fit-content;
     display: flex;
@@ -179,10 +209,10 @@ footer button.show {
     color: #FFFFFF;
 }
 
-.desktop-1 .group-5, .group-2 {
+.group-5, .group-2 {
     background: #132245;
     position: relative;
-    margin-bottom: 15rem;
+    margin-bottom: 150px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -192,11 +222,12 @@ footer button.show {
 }
 
 .group-2 {
+    height: auto;
     margin-bottom: 0;
     align-items: center;
 }
 
-.desktop-1 .container-4 {
+.container-4 {
     align-self: flex-start;
     overflow-wrap: break-word;
     font-weight: 400;
@@ -206,13 +237,13 @@ footer button.show {
     color: #FFFFFF;
 }
 
-.desktop-1 .container-5 {
+.container-5 {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
 }
 
-.desktop-1 .ellipse-2 {
+.ellipse-2 {
     margin: 0.8rem 0;
     width: 5.3rem;
     height: 5rem;
@@ -220,6 +251,8 @@ footer button.show {
 
 /*????????*/
 .container {
+    max-width: 100%;
+    overflow-x: hidden;
     margin: 0;
     padding: 0;
 }
@@ -259,28 +292,29 @@ footer button.show {
     color: #ffffff;
 }
 
-.desktop-1, .desktop-2 {
+.desktop-1, .task {
     background: linear-gradient(to bottom, #D9E5F5, #EBF3FF);
     display: flex;
-    width: 100vw;
+    width: 100%;
     padding-top: 0.6rem;
     padding-left: 5rem;
     padding-right: 5rem;
     flex-direction: column;
     align-items: center;
-    min-height: 100vw;
+    min-height: fit-content;
 }
 
-.desktop-2 {
+.task {
     background: #132245;
 }
 
 
-.desktop-2 .container-start-test, .quiz_box {
+.task .container-start-test, .quiz_box {
     border-radius: 48px;
     background: #E5EEFB;
     position: relative;
     margin-top: 3rem;
+    margin-bottom: 5rem;
     padding: 3rem;
     width: 100%;
     display: flex;

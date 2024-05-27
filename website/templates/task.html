@@ -1,25 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Task{% endblock %}
+{% block title %}task{% endblock %}
 {% block content %}
-<div class="desktop-2">
-    <div class="container-6-1">
-        <img class="container-4" src="поки нема"/>
-        <div class="text-head">
-            <div class="text-1">
-                Text
-            </div>
-            <button class="text-1" id="piano-down">
-                Piano
-            </button>
-            <div class="container-1-1">
-            <span class="important-1-1">
-            Important
-            </span>
-            </div>
-        </div>
-    </div>
-
-    <div class="piano-container">
+<body class="task">
+        <div class="piano-container">
         <div class="piano">
             <!-- Велика октава -->
             <div class="key white" data-note="C2"></div>
@@ -121,7 +104,7 @@
         </footer>
     </div>
 
-</div>
+</body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.37/Tone.js"></script>
 <script src="/static/js/piano.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/cjs/vexflow.js"></script>
