@@ -291,7 +291,7 @@ header .task {
     color: #ffffff;
 }
 
-.desktop-1, .task, .registration, .authentication {
+.desktop-1, .task, .sign-up-in {
     background: linear-gradient(to bottom, #D9E5F5, #EBF3FF);
     display: flex;
     width: 100%;
@@ -532,11 +532,6 @@ section .option_list .option {
     border-radius: 5px 5px 0 0;
 }
 
-.registration {
-    display: flex;
-    justify-content: center;
-}
-
 .container-3 {
     display: flex;
     width: fit-content;
@@ -550,8 +545,10 @@ section .option_list .option {
 }
 
 .all-inputs {
+    display: flex;
     width: 100%;
     justify-content: flex-start;
+    flex-direction: column;
 }
 
 .reg-auth-input-group {
@@ -573,6 +570,7 @@ section .option_list .option {
     margin-top: 20px;
     margin-bottom: 30px;
     margin-left: 0;
+    align-self: center;
 }
 
 .reg-auth-input {

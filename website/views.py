@@ -13,10 +13,11 @@ def task(number):
     return render_template("task.html", num=number)
 
 
-@views.route('/registration')
+@views.route('/signup')
 def registration():
-    return render_template("registration.html")
+    return render_template("sign_up_in.html", sign_up=True)
 
-@views.route('/authentication')
+
+@views.route('/signin')
 def authentication():
-    return render_template("authentication.html")
+    return render_template("sign_up_in.html", sign_up=False)

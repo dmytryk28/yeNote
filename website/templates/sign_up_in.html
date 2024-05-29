@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}yeNote{% endblock %}
+{% block content %}
+    <div class="sign-up-in">
+        <div class="container-3">
+            <span class="ye-note">
+                yeNote
+            </span>
+            <span class="registration-auth">
+                {{ 'Реєстрація' if sign_up else 'Вхід' }}
+            </span>
+            <form class="all-inputs">
+                {% if sign_up %}
+                    <div class="reg-auth-input-group">
+                        <label>
+                            Ім'я
+                        </label>
+                        <input class="reg-auth-input" type="text" required placeholder="Capybara"/>
+                    </div>
+                    <div class="reg-auth-input-group">
+                        <label>
+                            Прізвище
+                        </label>
+                        <input class="reg-auth-input" type="text" required placeholder="Samotnya"/>
+                    </div>
+                    <div class="reg-auth-input-group">
+                        <label>
+                            Роль
+                        </label>
+                        <select class="reg-auth-input">
+                            <option value="student">Студент</option>
+                            <option value="teacher">Викладач</option>
+                        </select>
+                    </div>
+                {% endif %}
+                <div class="reg-auth-input-group">
+                    <label>
+                        Електронна пошта
+                    </label>
+                    <input class="reg-auth-input" type="email" required placeholder="yenote@example.com"/>
+                </div>
+                <div class="reg-auth-input-group">
+                    <label>
+                        Пароль
+                    </label>
+                    <input class="reg-auth-input" type="password" required
+                           placeholder="&middot&middot&middot&middot&middot&middot&middot"/>
+                </div>
+            <button class="container-2-1" type="submit">
+                {{ 'Зареєструватися' if sign_up else 'Увійти' }}
+            </button>
+            </form>
+
+        </div>
+    </div>
+{% endblock %}
