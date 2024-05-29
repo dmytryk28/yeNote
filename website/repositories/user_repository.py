@@ -1,3 +1,4 @@
+import bcrypt
 from bson import ObjectId
 from website import yenote_db
 
@@ -27,6 +28,13 @@ class UserRepository:
             user.pop('password')
         print(user)
         return user
+
+    def get_user_by_email_and_password(self, email, password):
+        user = self.db.user.find_one({"email": email})
+        if user and bcrypt.checkpw(password.encode('utf-8'), user['password']):
+            user['_id'] = str(user['_id'])
+            user.pop('password')
+            return user
 
     def update_user(self, user_id, data):
         result = self.db.user.update_one({"_id": ObjectId(user_id)}, {"$set": data})

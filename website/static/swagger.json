@@ -60,6 +60,38 @@
         }
       }
     },
+    "/users/authenticate/": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Authenticate user",
+        "description": "Authenticate user with email and password",
+        "operationId": "authenticateUser",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Email and password for authentication",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserAuth"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "description": "Invalid email or password"
+          }
+        }
+      }
+    },
     "/users/{userId}": {
       "get": {
         "tags": ["Users"],
@@ -199,6 +231,20 @@
           "description": "User role (Teacher/Student)",
           "enum": ["Teacher", "Student"]
         },
+        "email": {
+          "type": "string",
+          "description": "User's email address"
+        },
+        "password": {
+          "type": "string",
+          "description": "User's password"
+        }
+      }
+    },
+    "UserAuth": {
+      "type": "object",
+      "required": ["email", "password"],
+      "properties": {
         "email": {
           "type": "string",
           "description": "User's email address"

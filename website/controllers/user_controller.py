@@ -10,7 +10,6 @@ def create_user():
     data = request.get_json()
     if not data:
         return jsonify({"error": "No input data provided"}), 400
-
     new_user = user_service.create_user(data)
     return jsonify(new_user), 201
 
@@ -27,6 +26,17 @@ def get_user(user_id):
     if not user:
         return jsonify({"error": "User not found"}), 404
     return jsonify(user), 200
+
+
+@user_blueprint.route('/authenticate/', methods=['POST'])
+def authenticate_user():
+    data = request.json
+    email = data.get('email')
+    password = data.get('password')
+    user = user_service.get_user_by_email_and_password(email, password)
+    if user:
+        return jsonify(user), 200
+    return jsonify({'error': 'Invalid email or password'}), 401
 
 
 @user_blueprint.route('/<user_id>', methods=['PUT'])

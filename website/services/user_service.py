@@ -16,6 +16,9 @@ class UserService:
     def get_user(self, user_id):
         return self.user_repository.get_user(user_id)
 
+    def get_user_by_email_and_password(self, email, password):
+        return self.user_repository.get_user_by_email_and_password(email, password)
+
     def update_user(self, user_id, data):
         if 'password' in data:
             data['password'] = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
