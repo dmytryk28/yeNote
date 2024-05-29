@@ -127,7 +127,7 @@ header .task {
     color: #E5EEFB;
 }
 
-.important, .show-all-tests, .task .important {
+.important, .show-all-tests, .task .important, .container-2-1 {
     overflow-wrap: break-word;
     font-weight: 500;
     font-size: 1.5rem;
@@ -146,7 +146,7 @@ header .task {
     align-items: center;
 }
 
-.container-1, .container-2, .start_button button {
+.container-1, .container-2, .container-2-1, .start_button button {
     flex: 1.5;
     border-radius: 3rem;
     background: #132245;
@@ -266,7 +266,7 @@ header .task {
     margin-bottom: 10rem;
 }
 
-.desktop-1 .ye-note {
+.ye-note {
     overflow-wrap: break-word;
     font-family: 'Space Grotesk';
     font-weight: 500;
@@ -274,7 +274,7 @@ header .task {
     color: #132245;
 }
 
-.desktop-1 .test-your-knowledge {
+.desktop-1 .test-your-knowledge, .registration-auth {
     overflow-wrap: break-word;
     font-weight: 500;
     font-size: 1.4rem;
@@ -291,7 +291,7 @@ header .task {
     color: #ffffff;
 }
 
-.desktop-1, .task {
+.desktop-1, .task, .registration, .authentication {
     background: linear-gradient(to bottom, #D9E5F5, #EBF3FF);
     display: flex;
     width: 100%;
@@ -484,7 +484,7 @@ section .option_list .option {
     border-radius: 5px;
     cursor: pointer;
     display: flex;
-    align-items: center; /* Center the icon vertically */
+    align-items: center;
     justify-content: center;
 }
 
@@ -531,3 +531,53 @@ section .option_list .option {
     width: 33%;
     border-radius: 5px 5px 0 0;
 }
+
+.registration {
+    display: flex;
+    justify-content: center;
+}
+
+.container-3 {
+    display: flex;
+    width: fit-content;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 80px 0;
+    padding: 0 4rem;
+    border: 3px solid rgb(25, 47, 96);
+    border-radius: 10px;
+}
+
+.all-inputs {
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.reg-auth-input-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.radio-group {
+    display: flex;
+    gap: 50px;
+}
+
+.container-2-1 {
+    font-size: 19px;
+    width: 80%;
+    padding: 10px 10px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    margin-left: 0;
+}
+
+.reg-auth-input {
+    padding-left: 10px;
+    height: 35px;
+    border-radius: 10px;
+}
+

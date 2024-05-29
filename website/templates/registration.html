@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<body>
+<div class="registration">
+    <div class="container-3">
+         <span class="ye-note">
+            yeNote
+          </span>
+        <span class="registration-auth">
+          Реєстрація
+          </span>
+        <form class="all-inputs">
+            <div class="reg-auth-input-group">
+                <label>
+                    Ім'я
+                </label>
+                <input class="reg-auth-input" type="text" required placeholder="Capybara"/>
+            </div>
+            <div class="reg-auth-input-group">
+                <label>
+                    Прізвище
+                </label>
+                <input class="reg-auth-input" type="text" required placeholder="Samotnya"/>
+            </div>
+            <div class="reg-auth-input-group">
+                <label>
+                    Електронна пошта
+                </label>
+                <input class="reg-auth-input" type="email" required placeholder="yenote@example.com"/>
+            </div>
+            <div class="reg-auth-input-group">
+                <label>
+                    Пароль
+                </label>
+                <input class="reg-auth-input" type="password" required placeholder="&middot&middot&middot&middot&middot&middot&middot"/>
+            </div>
+            <div class="reg-auth-input-group">
+                <label>
+                    Роль:
+                </label>
+                <!--            <div class="radio-group">-->
+                <!--            <label><input type="radio" value="value1" name="group1-radio" checked><span>Студент</span></label>-->
+                <!--            <label><input type="radio" value="value2" name="group1-radio" ><span>Викладач</span></label>-->
+                <!--            </div>-->
+                <select class="reg-auth-input">
+                    <option value="student">Студент</option>
+                    <option value="teacher">Викладач</option>
+                </select>
+            </div>
+        </form>
+        <input class="container-2-1" type="submit" value="Зареєструватися" />
+    </div>
+</div>
+</body>
+{% endblock %}

@@ -11,3 +11,12 @@ def home():
 @views.route('/task/<int:number>')
 def task(number):
     return render_template("task.html", num=number)
+
+
+@views.route('/registration')
+def registration():
+    return render_template("registration.html")
+
+@views.route('/authentication')
+def authentication():
+    return render_template("authentication.html")
