@@ -9,25 +9,25 @@
             <span class="registration-auth">
                 {{ 'Реєстрація' if sign_up else 'Вхід' }}
             </span>
-            <form class="all-inputs">
+            <form class="all-inputs" id="sign-up-in-form">
                 {% if sign_up %}
                     <div class="reg-auth-input-group">
                         <label>
                             Ім'я
                         </label>
-                        <input class="reg-auth-input" type="text" required placeholder="Capybara"/>
+                        <input id="name" class="reg-auth-input" type="text" required placeholder="Capybara"/>
                     </div>
                     <div class="reg-auth-input-group">
                         <label>
                             Прізвище
                         </label>
-                        <input class="reg-auth-input" type="text" required placeholder="Samotnya"/>
+                        <input id="surname" class="reg-auth-input" type="text" required placeholder="Samotnya"/>
                     </div>
                     <div class="reg-auth-input-group">
                         <label>
                             Роль
                         </label>
-                        <select class="reg-auth-input">
+                        <select class="reg-auth-input" id="role">
                             <option value="student">Студент</option>
                             <option value="teacher">Викладач</option>
                         </select>
@@ -37,20 +37,20 @@
                     <label>
                         Електронна пошта
                     </label>
-                    <input class="reg-auth-input" type="email" required placeholder="yenote@example.com"/>
+                    <input id="email" class="reg-auth-input" type="email" required placeholder="yenote@example.com"/>
                 </div>
                 <div class="reg-auth-input-group">
                     <label>
                         Пароль
                     </label>
-                    <input class="reg-auth-input" type="password" required
+                    <input id="password" class="reg-auth-input" type="password" required
                            placeholder="&middot&middot&middot&middot&middot&middot&middot"/>
                 </div>
             <button class="container-2-1" type="submit">
                 {{ 'Зареєструватися' if sign_up else 'Увійти' }}
             </button>
             </form>
-
         </div>
     </div>
+    <script src="/static/js/sign_up_in.js"></script>
 {% endblock %}
