@@ -104,8 +104,10 @@ header .task, header .profile {
     background-color: #132245;
 }
 
-.container-6 {
+.task .container-6, .profile .container-6 {
     width: 100%;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 
@@ -638,6 +640,7 @@ section .option_list .option {
 .profile {
 
 }
+
 .left-container {
     width: 30%;
     align-items: center;
