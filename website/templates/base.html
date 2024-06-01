@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
+<html lang="en">
+<head>
+    <script src="/static/js/script.js"></script>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,34 +41,41 @@
     <title>{% block title %}Home{% endblock %}</title>
 </head>
 <header class="container-6">
-        <img class="container-4" src="поки нема"/>
-        <div class="text-head">
-            <div class="text">
-                Text
-            </div>
-            <div class="text" id="piano-down">
-                Piano
-            </div>
-            <div class="container-1">
-            <span class="important">
-            Important
-            </span>
-            </div>
+    <img class="container-4" src="поки нема"/>
+    <div class="text-head">
+        <div class="text">
+            Text
         </div>
+        <div class="text" id="piano-down">
+            Piano
+        </div>
+        <div class="container-1">
+            <span class="important">
+                Профіль
+                <div class="dropdown-content" id="dropdownContent">
+                    <div style="padding-bottom: 12px">
+                    <p>Еван Пітерс
+                    <p class="poshta">samotnicapibary@gmail.com</p></div>
+                    <a>Уся інформація</a>
+                    <a>Вийти</a>
+                </div>
+            </span>
+        </div>
+    </div>
 </header>
 <body>
     <div class="container">{% block content %} {% endblock %}</div>
 </body>
 <footer class="group-2">
-              <div class="container-5">
-                <span class="container-4">
-                Зв’яжіться з нами:<br />
-                samotnicapibary@poshta.com
-                </span>
-                <span class="container-4">
-                © 2024 “Самотні капібари”
-                </span>
-              </div>
-              <img class="ellipse-2" src="../assets/vectors/ellipse_24_x2.svg" />
-            </footer>
+    <div class="container-5">
+        <span class="container-4">
+            Зв’яжіться з нами:<br />
+            samotnicapibary@poshta.com
+        </span>
+        <span class="container-4">
+            © 2024 “Самотні капібари”
+        </span>
+    </div>
+    <img class="ellipse-2" src="../assets/vectors/ellipse_24_x2.svg" />
+</footer>
 </html>

@@ -21,3 +21,8 @@ def registration():
 @views.route('/signin')
 def authentication():
     return render_template("sign_up_in.html", sign_up=False)
+
+
+@views.route('/profile')
+def profile():
+    return render_template("profile.html")
