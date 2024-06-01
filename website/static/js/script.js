@@ -92,9 +92,11 @@ function optionSelected(answer, userAns) {
     nextBtn.classList.add("show");
 }
 
-function updateStatistics(ansIsCorrect) {
+function updateStatistics(ansIsCorrect, taskNum) {
+    const user = localStorage.getItem('user');
+    if (!user) return;
     const xhr = new XMLHttpRequest();
-    xhr.open('PUT', `../../api/v1/users/${JSON.parse(localStorage.getItem('user'))._id}/${taskNum}/${Number(ansIsCorrect)}`);
+    xhr.open('PUT', `../../api/v1/users/${JSON.parse(user)._id}/${taskNum}/${Number(ansIsCorrect)}`);
     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     xhr.send();
 }

@@ -1,3 +1,6 @@
+document.getElementsByClassName('container-6')[0].style.display = 'none';
+localStorage.clear();
+
 document.getElementById('sign-up-in-form').addEventListener('submit', event => {
     event.preventDefault();
 
