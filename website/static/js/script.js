@@ -1,23 +1,3 @@
-document.addEventListener('DOMContentLoaded', (event) => {
-    const container1 = document.querySelector('.container-1');
-    const dropdownContent = document.getElementById('dropdownContent');
-    const profileSpan = container1.querySelector('.important');
-
-    function toggleDropdown(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        dropdownContent.classList.toggle('show');
-    }
-
-    container1.addEventListener('click', toggleDropdown);
-    profileSpan.addEventListener('click', toggleDropdown);
-    window.addEventListener('click', (event) => {
-        if (!container1.contains(event.target)) {
-            dropdownContent.classList.remove('show');
-        }
-    });
-});
-
 const groupElements = document.querySelectorAll('.group-1');
 groupElements.forEach(element => {
     const id = element.getAttribute('id');
@@ -98,14 +78,23 @@ function showQuestion() {
 }
 
 function optionSelected(answer, userAns) {
-    let correctAns = currentAnswer;
+    const correctAns = currentAnswer;
+    const ansIsCorrect = userAns === correctAns
     const allOptions = optionList.children;
-    answer.classList.add(userAns === correctAns ? "correct" : "incorrect");
+    updateStatistics(ansIsCorrect);
+    answer.classList.add(ansIsCorrect ? "correct" : "incorrect");
     if (withOptions) currentNotes.forEach(num => {
-        document.querySelector(`.key:nth-child(${num})`).classList.add(userAns === correctAns ? "correct" : "incorrect")
+        document.querySelector(`.key:nth-child(${num})`).classList.add(ansIsCorrect ? "correct" : "incorrect")
     });
-    if (userAns !== correctAns)
+    if (!ansIsCorrect)
         allOptions[correctAns - !withOptions].classList.add("correct");
     Array.from(allOptions).forEach(option => option.classList.add("disabled"));
     nextBtn.classList.add("show");
+}
+
+function updateStatistics(ansIsCorrect) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('PUT', `../../api/v1/users/${JSON.parse(localStorage.getItem('user'))._id}/${taskNum}/${Number(ansIsCorrect)}`);
+    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    xhr.send();
 }

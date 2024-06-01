@@ -13,7 +13,10 @@ document.getElementById('sign-up-in-form').addEventListener('submit', event => {
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 201 || xhr.status === 200) window.location.href = '../';
+            if (xhr.status === 201 || xhr.status === 200) {
+                localStorage.setItem('user', xhr.responseText);
+                window.location.href = '../';
+            }
             else alert('Сталася помилка');
         }
     };

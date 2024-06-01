@@ -26,3 +26,6 @@ class UserService:
 
     def delete_user(self, user_id):
         return self.user_repository.delete_user(user_id)
+
+    def update_statistics(self, user_id, category, point):
+        return self.user_repository.update_statistics(user_id, category, point)

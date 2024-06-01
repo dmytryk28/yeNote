@@ -56,3 +56,11 @@ def delete_user(user_id):
     if user_service.delete_user(user_id):
         return '', 204
     return jsonify({"error": "User not found"}), 404
+
+
+@user_blueprint.route('/<user_id>/<int:category>/<int:point>', methods=['PUT'])
+def update_statistics(user_id, category, point):
+    updated_user = user_service.update_statistics(user_id, category, point)
+    if not updated_user:
+        return jsonify({"error": "User not found"}), 404
+    return '', 200

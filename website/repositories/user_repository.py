@@ -48,3 +48,20 @@ class UserRepository:
     def delete_user(self, user_id):
         result = self.db.user.delete_one({"_id": ObjectId(user_id)})
         return result.deleted_count > 0
+
+    def update_statistics(self, user_id, category, point):
+        user = self.db.user.find_one({"_id": ObjectId(user_id)})
+        if not user:
+            return False
+        category = str(category)
+        if 'statistics' not in user:
+            user['statistics'] = {}
+        if category not in user['statistics']:
+            user['statistics'][category] = [0, 0]
+        user['statistics'][category][0] += 1
+        user['statistics'][category][1] += point
+        self.db.user.update_one(
+            {"_id": ObjectId(user_id)},
+            {"$set": {"statistics": user['statistics']}}
+        )
+        return True
