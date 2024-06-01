@@ -92,7 +92,7 @@ function optionSelected(answer, userAns) {
     nextBtn.classList.add("show");
 }
 
-function updateStatistics(ansIsCorrect, taskNum) {
+function updateStatistics(ansIsCorrect) {
     const user = localStorage.getItem('user');
     if (!user) return;
     const xhr = new XMLHttpRequest();

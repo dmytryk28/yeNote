@@ -184,32 +184,67 @@
         }
       }
     },
+    "/users/{userId}/statistics/": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get user's statistics by ID",
+        "description": "Retrieve statistics for a user by their ID",
+        "operationId": "getStatistics",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user whose statistics to retrieve",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
     "/users/{userId}/{category}/{point}": {
       "put": {
         "tags": ["Users"],
         "summary": "Update user's statistics by ID",
-        "description": "",
+        "description": "Update user's statistics by their ID, task category, and point",
         "operationId": "updateStatistics",
         "produces": ["application/json"],
         "parameters": [
           {
             "name": "userId",
             "in": "path",
-            "description": "ID of the user to delete",
+            "description": "ID of the user to update statistics for",
             "required": true,
             "type": "string"
           },
           {
             "name": "category",
             "in": "path",
-            "description": "number of task category",
+            "description": "Number of task category",
             "required": true,
             "type": "integer"
           },
           {
             "name": "point",
             "in": "path",
-            "description": "point for task",
+            "description": "Point for task",
             "required": true,
             "type": "integer"
           }

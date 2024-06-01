@@ -29,3 +29,6 @@ class UserService:
 
     def update_statistics(self, user_id, category, point):
         return self.user_repository.update_statistics(user_id, category, point)
+
+    def get_statistics(self, user_id):
+        return self.user_repository.get_statistics(user_id)

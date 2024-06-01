@@ -65,3 +65,11 @@ class UserRepository:
             {"$set": {"statistics": user['statistics']}}
         )
         return True
+
+    def get_statistics(self, user_id):
+        user = self.db.user.find_one({"_id": ObjectId(user_id)})
+        if not user:
+            return False
+        if 'statistics' not in user:
+            return True
+        return user['statistics']

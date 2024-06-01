@@ -64,3 +64,11 @@ def update_statistics(user_id, category, point):
     if not updated_user:
         return jsonify({"error": "User not found"}), 404
     return '', 200
+
+
+@user_blueprint.route('/<user_id>/statistics/', methods=['GET'])
+def get_statistics(user_id):
+    statistics = user_service.get_statistics(user_id)
+    if not statistics:
+        return jsonify({"error": "User not found"}), 404
+    return jsonify(statistics), 200
