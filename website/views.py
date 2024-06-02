@@ -26,3 +26,7 @@ def authentication():
 @views.route('/profile')
 def profile():
     return render_template("profile.html")
+
+@views.route('/create_test')
+def create_test():
+    return render_template("create_test.html")
