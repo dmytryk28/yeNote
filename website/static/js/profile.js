@@ -2,6 +2,42 @@ document.addEventListener('DOMContentLoaded', async () => {
     const user = JSON.parse(localStorage.getItem('user'));
     document.getElementById('role').innerHTML = user.role;
 
+    if (user.role === 'Викладач') {
+        let myTasks = [];
+        try {
+            const response = await fetch(`../api/v1/tasks/teacher/${user._id}`, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json;charset=UTF-8'}
+            });
+
+            if (response.ok) {
+                myTasks = await response.json();
+            } else {
+                alert('Сталася помилка');
+                return;
+            }
+        } catch (error) {
+            alert('Сталася помилка');
+            return;
+        }
+        showMyTasks(myTasks);
+    }
+
+    function showMyTasks(myTasks) {
+        for (task of myTasks) {
+            document.getElementById('my-tasks').innerHTML += `
+            <div class="my-task">
+                <p class="datetime">Від ${task.time_start}</p>
+                <p class="datetime">До ${task.time_end}</p>
+                <p class="name-1">${task.name}</p>
+                <span class="description">${task.description}</span>
+                <p class="task-code">${task._id}</p>
+                <button class="show-task">Переглянути</button>
+            </div>
+            `;
+        }
+    }
+
     let statistics = {};
 
     try {
@@ -49,11 +85,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const data = [];
 
     if (sums[0] !== sums[1]) {
-        data.push({ value: sums[0] - sums[1], color: 'rgba(255,60,96,0.7)' });
+        data.push({value: sums[0] - sums[1], color: 'rgba(255,60,96,0.7)'});
     }
 
     if (sums[1] !== 0) {
-        data.push({ value: sums[1], color: 'rgba(105,235,54,0.7)' });
+        data.push({value: sums[1], color: 'rgba(105,235,54,0.7)'});
     }
 
     const canvas = document.getElementById('myPieChart');

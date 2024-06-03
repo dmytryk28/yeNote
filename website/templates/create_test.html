@@ -1,96 +1,76 @@
 {% extends "base.html" %}
 {% block title %}create_test{% endblock %}
 {% block content %}
-<body class="create_test">
-<div class="center-container">
-    <div style="display: flex; gap:130px;">
-        <div style="width: 70%; display: flex; flex-direction: column;">
-            <label for="test-name">Назва тесту</label>
-            <input style="height: 38px" id="test-name" type="text" placeholder="Введіть назву..." required/>
+    <body class="create_test">
+    <div class="center-container">
+        <div style="display: flex; gap:130px;">
+            <div style="width: 70%; display: flex; flex-direction: column;">
+                <label for="test-name">Назва тесту</label>
+                <input style="height: 38px" id="test-name" type="text" placeholder="Введіть назву..." required/>
 
-            <label for="test-description">Опис тесту</label>
-            <textarea id="test-description" rows="3" style="resize: vertical;" placeholder="Введіть опис..."></textarea>
+                <label for="test-description">Опис тесту</label>
+                <textarea id="test-description" rows="3" style="resize: vertical;"
+                          placeholder="Введіть опис..."></textarea>
 
-            <label for="time-start">Тест відкритий з</label>
-            <div class="datetime-container">
-                <span>з</span>
-                <input style="height: 38px" id="time-start" type="datetime-local"/>
-                <span>до</span>
-                <input style="height: 38px" id="time-end" type="datetime-local"/>
+                <label for="time-start">Тест відкритий з</label>
+                <div class="datetime-container">
+                    <span>з</span>
+                    <input style="height: 38px" id="time-start" type="datetime-local"/>
+                    <span>до</span>
+                    <input style="height: 38px" id="time-end" type="datetime-local"/>
+                </div>
+            </div>
+            <div style="display:flex; justify-items: center; align-items: center">
+                <div class="code">
+                    <a>Код тесту</a>
+                    <a>1584Y1</a>
+                </div>
             </div>
         </div>
-        <div style="display:flex; justify-items: center; align-items: center">
-            <div class="code">
-            <a>Код тесту</a>
-            <a>1584Y1</a>
+        <hr>
+        <label>
+            Список питань:
+        </label>
+        <div class="question_list"></div>
+        <button id="open-question-form" class="container-2">Додати питання</button>
+        <button id="save-task" class="container-2">Зберегти завдання</button>
+    </div>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <label for="test-name">Питання</label>
+            <textarea style="margin-bottom: 10px; resize: vertical;" id="question-description" rows="3"
+                      placeholder="Введіть питання..."></textarea>
+            <div style="display: flex; width: fit-content; gap:20px">
+                <button class="question-media">Додати зображення</button>
+                <button class="question-media">Додати Youtube відео</button>
+                <button class="question-media">Додати аудіо</button>
             </div>
+            <p>
+                Оберіть формат відповіді
+            </p>
+            <select id="type-ques">
+                <option value="0">Коротка текстова відповідь</option>
+                <option value="1">Одна правильна відповідь</option>
+            </select>
+            <div id="single-answer" class="answer-stack" style="display: none">
+                <div class="answer">
+                    <input class="checkmark" type="radio" name="contact" value="right-answer"/>
+                    <input style="height: 38px" class="input-answer" type="text" placeholder="Введіть питання..."
+                           required/>
+                </div>
+                <div class="answer">
+                    <input type="radio" name="contact" value="right-answer"/>
+                    <input style="height: 38px" class="input-answer" type="text" placeholder="Введіть питання..."
+                           required/>
+                </div>
+                <button class="add-answer">Додати варіант відповіді</button>
+            </div>
+            <textarea style="margin-bottom: 10px; resize: vertical;" id="student-answer" rows="3"
+                      placeholder="Відповідь студента..."></textarea>
+            <button id="save-question" class="container-2">Зберегти питання</button>
         </div>
     </div>
-    <hr>
-    <label>
-        Список питань:
-    </label>
-    <div class="question_list">
-        <div class="question">
-            1. Яка різниця між тріадою та септакордом?
-        </div>
-        <div class="question">
-            2. Які бувають види ладів у західній музиці?
-        </div>
-    </div>
-    <button class="container-2">Додати питання</button>
-</div>
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <label for="test-name">Питання 3</label>
-        <textarea style="margin-bottom: 10px;" id="question-description" rows="3" style="resize: vertical;"
-                  placeholder="Введіть питання..."></textarea>
-        <div style="display: flex; width: fit-content; gap:20px">
-            <button class="question-media">Додати зображення</button>
-            <button class="question-media">Додати Youtube відео</button>
-            <button class="question-media">Додати аудіо</button>
-        </div>
-        <p>
-            Оберіть формат відповіді
-        </p>
-        <select id="type-ques">
-            <option>Одна правильна відповідь</option>
-            <option>Коротка текстова відповідь</option>
-        </select>
-
-<!--        <div class="answer-stack">-->
-<!--            <div class="answer">-->
-<!--                <input class="checkmark" type="radio" name="contact" value=right-answer"/>-->
-<!--                <input style="height: 38px" class="input-answer" type="text" placeholder="Введіть питання..." required/>-->
-<!--                <button class="delete"><span style="font-size: 24px;">&#128465;</span></button>-->
-<!--            </div>-->
-<!--            <div class="answer">-->
-<!--                <input type="radio" name="contact" value=right-answer"/>-->
-<!--                <input style="height: 38px" class="input-answer" type="text" placeholder="Введіть питання..." required/>-->
-<!--                <button class="delete"><span style="font-size: 24px;">&#128465;</span></button>-->
-<!--            </div>-->
-<!--            <div class="answer">-->
-<!--                <input type="radio" name="contact" value=right-answer"/>-->
-<!--                <input style="height: 38px" class="input-answer" type="text" placeholder="Введіть питання..." required/>-->
-<!--                <button class="delete"><span style="font-size: 24px;">&#128465;</span></button>-->
-<!--            </div>-->
-<!--            <div class="answer">-->
-<!--                <input type="radio" name="contact" value=right-answer"/>-->
-<!--                <input style="height: 38px" class="input-answer" type="text" placeholder="Введіть питання..." required/>-->
-<!--                <button class="delete"><span style="font-size: 24px;">&#128465;</span></button>-->
-<!--            </div>-->
-<!--            <button class="add-answer">Додати варіант відповіді</button>-->
-<!--        </div>-->
-                    <textarea style="margin-bottom: 10px;" id="student-answer" rows="3" style="resize: vertical;"
-                  placeholder="Відповідь студента..."></textarea>
-        <button class="container-2">Зберегти питання</button>
-    </div>
-</div>
-</body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.37/Tone.js"></script>
-<script src="../static/js/create_test.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/cjs/vexflow.js"></script>
-<script src="../static/js/questions.js"></script>
-<script src="../static/js/script.js"></script>
+    </body>
+    <script src="../static/js/create_test.js"></script>
 {% endblock %}

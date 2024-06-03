@@ -26,7 +26,6 @@ class UserRepository:
         if user:
             user['_id'] = str(user['_id'])
             user.pop('password')
-        print(user)
         return user
 
     def get_user_by_email_and_password(self, email, password):
