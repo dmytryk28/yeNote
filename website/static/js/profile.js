@@ -2,26 +2,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     const user = JSON.parse(localStorage.getItem('user'));
     document.getElementById('role').innerHTML = user.role;
 
-    if (user.role === 'Викладач') {
-        let myTasks = [];
-        try {
-            const response = await fetch(`../api/v1/tasks/teacher/${user._id}`, {
-                method: 'GET',
-                headers: {'Content-Type': 'application/json;charset=UTF-8'}
-            });
+    let myTasks = [];
+    try {
+        const response
+            = await fetch(`../api/v1/tasks/${(user.role === 'Викладач') ? 'teacher' : 'student'}/${user._id}`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json;charset=UTF-8'}
+        });
 
-            if (response.ok) {
-                myTasks = await response.json();
-            } else {
-                alert('Сталася помилка');
-                return;
-            }
-        } catch (error) {
+        if (response.ok) {
+            myTasks = await response.json();
+        } else {
             alert('Сталася помилка');
             return;
         }
-        showMyTasks(myTasks);
+    } catch (error) {
+        alert('Сталася помилка');
+        return;
     }
+    showMyTasks(myTasks);
 
     function showMyTasks(myTasks) {
         for (task of myTasks) {

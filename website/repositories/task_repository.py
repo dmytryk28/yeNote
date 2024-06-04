@@ -24,3 +24,22 @@ class TaskRepository:
     def get_teacher_tasks(self, teacher_id):
         tasks = self.db.task.find({"teacher_id": ObjectId(teacher_id)})
         return [strings_to_ids(task) for task in tasks]
+
+    def get_student_tasks(self, student_id):
+        tasks = self.db.task.find({"students": ObjectId(student_id)})
+        task_list = []
+        for task in tasks:
+            task.pop('students')
+            task_list.append(strings_to_ids(task))
+        return task_list
+
+    def add_student_to_task(self, task_id, student_id):
+        result = self.db.task.update_one(
+            {"_id": ObjectId(task_id)},
+            {"$addToSet": {"students": ObjectId(student_id)}}
+        )
+        return result.modified_count == 1
+
+    def delete_task(self, task_id):
+        result = self.db.task.delete_one({"_id": ObjectId(task_id)})
+        return result.deleted_count == 1

@@ -12,12 +12,18 @@
   "paths": {
     "/users/": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Create a user",
         "description": "",
         "operationId": "createUser",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -42,11 +48,15 @@
         }
       },
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get list of users",
         "description": "",
         "operationId": "getUsers",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -62,12 +72,18 @@
     },
     "/users/authenticate/": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Authenticate user",
         "description": "Authenticate user with email and password",
         "operationId": "authenticateUser",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -94,11 +110,15 @@
     },
     "/users/{userId}": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get user by ID",
         "description": "",
         "operationId": "getUserById",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -121,11 +141,17 @@
         }
       },
       "put": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Update user by ID",
         "operationId": "updateUser",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -160,11 +186,15 @@
         }
       },
       "delete": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Delete user by ID",
         "description": "",
         "operationId": "deleteUser",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -186,11 +216,15 @@
     },
     "/users/{userId}/statistics/": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get user's statistics by ID",
         "description": "Retrieve statistics for a user by their ID",
         "operationId": "getStatistics",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -221,11 +255,15 @@
     },
     "/users/{userId}/{category}/{point}": {
       "put": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Update user's statistics by ID",
         "description": "Update user's statistics by their ID, task category, and point",
         "operationId": "updateStatistics",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "userId",
@@ -258,12 +296,123 @@
           }
         }
       }
+    },
+    "/tasks/{taskId}/{studentId}": {
+      "post": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Add student to task",
+        "description": "Assign a student to a specific task",
+        "operationId": "addStudentToTask",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "description": "ID of the task",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "studentId",
+            "in": "path",
+            "description": "ID of the student",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Student successfully added to task"
+          },
+          "404": {
+            "description": "Task or student not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tasks/student/{studentId}": {
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Get student tasks",
+        "description": "Retrieve all tasks assigned to a specific student",
+        "operationId": "getStudentTasks",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "description": "ID of the student",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "Task ID"
+                  },
+                  "teacher_id": {
+                    "type": "string",
+                    "description": "Teacher ID"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the task"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Description of the task"
+                  },
+                  "students": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of student IDs assigned to the task"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Student not found or no tasks assigned to this student"
+          }
+        }
+      }
     }
   },
   "definitions": {
     "User": {
       "type": "object",
-      "required": ["name", "surname", "role", "email"],
+      "required": [
+        "name",
+        "surname",
+        "role",
+        "email"
+      ],
       "properties": {
         "_id": {
           "type": "string",
@@ -280,7 +429,10 @@
         "role": {
           "type": "string",
           "description": "User role (Teacher/Student)",
-          "enum": ["Teacher", "Student"]
+          "enum": [
+            "Teacher",
+            "Student"
+          ]
         },
         "email": {
           "type": "string",
@@ -290,7 +442,13 @@
     },
     "UserInput": {
       "type": "object",
-      "required": ["name", "surname", "role", "email", "password"],
+      "required": [
+        "name",
+        "surname",
+        "role",
+        "email",
+        "password"
+      ],
       "properties": {
         "name": {
           "type": "string",
@@ -303,7 +461,10 @@
         "role": {
           "type": "string",
           "description": "User role (Teacher/Student)",
-          "enum": ["Teacher", "Student"]
+          "enum": [
+            "Teacher",
+            "Student"
+          ]
         },
         "email": {
           "type": "string",
@@ -317,7 +478,10 @@
     },
     "UserAuth": {
       "type": "object",
-      "required": ["email", "password"],
+      "required": [
+        "email",
+        "password"
+      ],
       "properties": {
         "email": {
           "type": "string",
