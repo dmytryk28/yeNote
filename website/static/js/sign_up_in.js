@@ -20,7 +20,7 @@ document.getElementById('sign-up-in-form').addEventListener('submit', event => {
                 localStorage.setItem('user', xhr.responseText);
                 window.location.href = '../';
             }
-            else alert('Сталася помилка');
+            else alert('Неправильні вхідні дані');
         }
     };
     xhr.send(JSON.stringify(formData));

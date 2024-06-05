@@ -22,16 +22,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     showMyTasks(myTasks);
 
+    function formatDateTime(datetime) {
+        const [date, time] = datetime.split('T');
+        const [year, month, day] = date.split('-');
+        const formattedDate = `${day}.${month}.${year}`;
+        return `${time} ${formattedDate}`;
+    }
+
     function showMyTasks(myTasks) {
         for (task of myTasks) {
             document.getElementById('my-tasks').innerHTML += `
             <div class="my-task">
-                <p class="datetime">Від ${task.time_start}</p>
-                <p class="datetime">До ${task.time_end}</p>
+            <div style="width: 70%">
                 <p class="name-1">${task.name}</p>
-                <span class="description">${task.description}</span>
-                <p class="task-code">${task._id}</p>
-                <button class="show-task">Переглянути</button>
+                <p class="description">${task.description}</p>
+                <p class="task-code" style="margin-bottom: 0; font-size: 16px">Код: ${task._id}</p>
+                <p class="datetime">Доступно з ${formatDateTime(task.time_start)} до ${formatDateTime(task.time_end)}</p>
+            </div>   
+            <div class="done-mark">
+            12
+            </div>
             </div>
             `;
         }
@@ -105,8 +115,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         let textY = canvas.height / 2 + (Math.sin(startAngle + sliceAngle / 2) * distance);
 
         if (item.color === 'rgba(255,60,96,0.7)') {
-            textX = 380; // Червоний сегмент
-            textY = 500; // Зміщуємо текст вниз
+            textX = 380;
+            textY = 500;
         } else if (item.color === 'rgba(105,235,54,0.7)') {
             textX = 0;
             textY = 30;

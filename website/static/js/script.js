@@ -5,7 +5,17 @@ groupElements.forEach(element => {
         window.location.href = `/task/${id}`;
     });
 });
+document.addEventListener('DOMContentLoaded', function() {
+    var showAllTestsButton = document.querySelector('.show-all-tests');
 
+    showAllTestsButton.addEventListener('click', function() {
+        var group5Position = document.querySelector('.group-5').getBoundingClientRect().top;
+        window.scrollTo({
+            top: group5Position,
+            behavior: 'smooth'
+        });
+    });
+});
 const taskNum = Number(document.querySelector(".container-start-test").getAttribute('data-task-num'));
 const withOptions = taskNum < 3;
 const startBtn = document.querySelector(".start_button button");

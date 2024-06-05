@@ -15,23 +15,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wdth,wght@1,75,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wdth,wght@1,75,100..900&display=swap"
+          rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+          rel="stylesheet">
     <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+            crossorigin="anonymous"
     />
     <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-      crossorigin="anonymous"
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+            crossorigin="anonymous"
     />
     <link rel="stylesheet" href="/static/style.css">
 
@@ -41,12 +44,11 @@
     <img class="container-4" src="поки нема"/>
     <div class="text-head">
         <div class="text">
-            Text
+            Рандом
         </div>
-        <div class="text" id="piano-down">
-            Piano
+        <div class="text" id="showModalBtn">
         </div>
-        <div class="container-1">
+        <div class="container-1" id="profile-button">
             <span class="important">
                 Профіль
                 <div class="dropdown-content" id="dropdownContent">
@@ -60,18 +62,36 @@
         </div>
     </div>
 </header>
-    <div class="container">{% block content %} {% endblock %}</div>
+
+<div id="customModal" class="modal-style">
+    <div class="modal-content-style">
+        <span class="close-style" id="closeModalButton">&times;</span>
+        <div class="modal-1">
+            <p>Пройти тест за кодом</p>
+            <div>
+            <input type="text" id="modalInputField">
+            <button id="submitModalBtn">&#10148;</button>
+                </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">{% block content %} {% endblock %}</div>
 <footer class="group-2">
     <div class="container-5">
         <span class="container-4">
-            Зв’яжіться з нами:<br />
+            Зв’яжіться з нами:<br/>
             samotnicapibary@poshta.com
         </span>
         <span class="container-4">
             © 2024 “Самотні капібари”
         </span>
     </div>
-    <img class="ellipse-2" src="../assets/vectors/ellipse_24_x2.svg" />
+    <img class="ellipse-2" src="../assets/vectors/ellipse_24_x2.svg"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.37/Tone.js"></script>
+<script src="../static/js/piano.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/cjs/vexflow.js"></script>
     <script src="../static/js/profile_dropdown.js"></script>
+    <script src="../static/js/base.js"></script>
 </footer>
 </html>

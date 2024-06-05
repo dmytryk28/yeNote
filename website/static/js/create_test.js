@@ -91,19 +91,46 @@ document.getElementById('save-question').onclick = () => {
         addText(questionDiv, que['answer'], true);
     } else if (que['type'] === '1') {
         que['answers'] = [];
+        const answerDiv = document.createElement('div');
+        answerDiv.style.display = 'flex';
+        answerDiv.style.flexDirection = 'column';
         const inputs = answersDiv.querySelectorAll('.input-answer');
         answersDiv.querySelectorAll('input[type="radio"]').forEach((radio, index) => {
             if (radio.checked) que['index'] = index;
             que['answers'].push(inputs[index].value);
-            addText(questionDiv, inputs[index].value, radio.checked);
+            addText(answerDiv, inputs[index].value, radio.checked);
         });
+        questionDiv.appendChild(answerDiv);
     }
-
     task['questions'].push(que);
     document.querySelector('.question_list').appendChild(questionDiv);
     modal.style.display = "none";
     resetQuestionForm();
     console.log(task);
+
+    const questionContainerDiv = document.createElement('div');
+    questionContainerDiv.className = 'question-container';
+
+
+    questionDiv.insertAdjacentElement('beforebegin', questionContainerDiv);
+    questionContainerDiv.appendChild(questionDiv);
+
+
+    const deleteButton = document.createElement('button');
+    deleteButton.className = 'delete-answer';
+    deleteButton.innerHTML = '<span style="font-size: 24px;">&#128465;</span>';
+    deleteButton.onclick = () => {
+        questionContainerDiv.remove();
+        task['questions'] = task['questions'].filter(q => q !== que);
+        toggleSaveButton();
+    };
+
+    questionDiv.insertAdjacentElement('afterend', deleteButton);
+    const ratingDiv = document.createElement('div');
+    ratingDiv.className = 'question-rating';
+    ratingDiv.innerHTML = 'Бал: <br> 1';
+    deleteButton.insertAdjacentElement('beforebegin', ratingDiv);
+ toggleSaveButton();
 }
 
 function addText(questionDiv, text, green) {
@@ -164,5 +191,14 @@ document.querySelector(".close").onclick = function () {
 window.onclick = function (event) {
     if (event.target == modal) {
         modal.style.display = "none";
+    }
+}
+
+function toggleSaveButton() {
+    const saveButton = document.getElementById("save-task");
+    if (task.questions.length > 0) {
+        saveButton.style.display = "block";
+    } else {
+        saveButton.style.display = "none";
     }
 }
