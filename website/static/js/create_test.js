@@ -19,24 +19,44 @@ if (!task.length) {
 }
 
 document.getElementById("save-task").onclick = () => {
+    // перевірка полів
     if (!("name" in task) || !("description" in task) || !("time_start" in task) || !("time_end" in task)
         || task["name"] === '' || task["description"] === ''
         || task["time_start"] === '' || task["time_end"] === '') {
         alert('Заповніть усі поля');
         return;
     }
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '../api/v1/tasks/');
-    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
 
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 201) window.location.href = '../profile';
-            else alert('Сталася помилка');
+    const storage = getStorage(app);
+
+    const uploadTasks = task.questions.map(async (que) => {
+        if (que.tempFileURL) {
+            const file = que.tempFileURL;
+            console.log(file);
+            const fileType = file.type.split('/')[0];
+            const folder = fileType === 'audio' ? 'audio/' : 'images/';
+            const storageRef = ref(storage, folder + file.name);
+            await uploadBytes(storageRef, file);
+            que.file = await getDownloadURL(storageRef); // оновлення шляху файлу в об'єкті питання
+            delete que.tempFileURL; // видалення тимчасового покликання
         }
-    };
-    xhr.send(JSON.stringify(task));
-}
+    });
+
+    Promise.all(uploadTasks).then(() => {
+        // надсилання запиту на сервер після завантаження файлів
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '../api/v1/tasks/');
+        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 201) window.location.href = '../profile';
+                else alert('Сталася помилка');
+            }
+        };
+        xhr.send(JSON.stringify(task));
+    });
+};
 
 queTypeSelect.addEventListener("change", () => {
     const selectedOption = queTypeSelect.value;
@@ -94,6 +114,7 @@ document.getElementById('save-question').onclick = () => {
         question: questionDescription.value.trim(),
         max_mark: Number(max_mark.value),
         type: Number(selectElement.options[selectElement.selectedIndex].value),
+        tempFileURL: tempFile,
     };
     const questionDiv = document.createElement('div');
     questionDiv.className = 'question';
@@ -170,6 +191,13 @@ function resetQuestionForm() {
     queTypeSelect.value = '0';
     const studentAnswer = document.getElementById("student-answer");
     const singleAnswer = document.getElementById("single-answer");
+    document.getElementById('additional-files').innerHTML = `
+    <label for="file-upload" class="question-media">
+        Додати зображення/аудіо
+    </label>
+    <input id="file-upload" type="file" style="display: none;">
+    <button id="add-youtube" class="question-media">Додати Youtube відео</button>
+    `
     studentAnswer.style.display = "block";
     singleAnswer.style.display = "none";
 }
@@ -197,61 +225,29 @@ document.querySelectorAll('.delete-answer').forEach(button => {
     addDeleteFunctionality(button);
 });
 
+
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
+    getDownloadURL,
     getStorage,
     ref,
-    uploadBytes,
-    getDownloadURL
+    uploadBytes
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDJfOnEWnPbAAzNY324wf0SHmpTb987FNo",
+    authDomain: "yenote-71e1f.firebaseapp.com",
+    projectId: "yenote-71e1f",
+    storageBucket: "yenote-71e1f.appspot.com",
+    messagingSenderId: "411199629610",
+    appId: "1:411199629610:web:884078f58373d78c58d653"
+};
+
+const app = initializeApp(firebaseConfig);
 
 document.getElementById("open-question-form").onclick = function () {
     modal.style.display = "block";
-
-    const firebaseConfig = {
-        apiKey: "Your-API-Key",
-        authDomain: "Your-Auth-Domain",
-        projectId: "Your-Project-ID",
-        storageBucket: "Your-Storage-Bucket",
-        messagingSenderId: "Your-Messaging-Sender-ID",
-        appId: "Your-App-ID"
-    };
-    const app = initializeApp(firebaseConfig);
-    const storage = getStorage(app);
-
-    async function uploadFile() {
-        const file = document.getElementById('file').files[0];
-        if (file) {
-            const fileType = file.type.split('/')[0];
-            if (fileType !== 'audio' && fileType !== 'image') {
-                alert('Дозволено завантажувати лише аудіо або зображення.');
-                return;
-            }
-            const folder = fileType === 'audio' ? 'audio/' : 'images/';
-            const storageRef = storage.ref().child(folder + file.name);
-            await storageRef.put(file);
-            const downloadURL = await storageRef.getDownloadURL();
-
-            if (fileType === 'audio') {
-                const audioElement = document.createElement('audio');
-                audioElement.controls = true;
-                audioElement.src = downloadURL;
-                document.body.insertBefore(document.getElementById('answer-format'), audioElement);
-            } else if (fileType === 'image') {
-                const imgElement = document.createElement('img');
-                imgElement.src = downloadURL;
-                document.body.insertBefore(document.getElementById('answer-format'), imgElement);
-            }
-
-            document.getElementById('add-image-audio').style.display = 'none';
-        } else {
-            alert('Оберіть файл.');
-        }
-    }
-
-    document.getElementById('add-image-audio').onclick = () => uploadFile();
 }
-
 
 document.querySelector(".close").onclick = function () {
     modal.style.display = "none";
@@ -271,3 +267,35 @@ function toggleSaveButton() {
         saveButton.style.display = "none";
     }
 }
+
+let tempFile = null;
+
+document.getElementById('file-upload').addEventListener('change', function () {
+    const file = this.files[0];
+    if (file) {
+        const fileType = file.type.split('/')[0];
+        if (fileType !== 'audio' && fileType !== 'image') {
+            alert('Дозволено завантажувати лише аудіо або зображення.');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const result = e.target.result;
+            if (fileType === 'audio') {
+                const audioElement = document.createElement('audio');
+                audioElement.controls = true;
+                audioElement.src = result;
+                document.getElementById('additional-files').innerHTML = audioElement.outerHTML;
+            } else if (fileType === 'image') {
+                const imgElement = document.createElement('img');
+                imgElement.src = result;
+                document.getElementById('additional-files').innerHTML = imgElement.outerHTML;
+            }
+        };
+        reader.readAsDataURL(file);
+        tempFile = file; // зберігання вибраного файлу в тимчасову змінну
+    } else {
+        alert('Оберіть файл.');
+    }
+});
