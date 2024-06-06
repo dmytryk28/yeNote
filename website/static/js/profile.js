@@ -39,9 +39,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <p class="task-code" style="margin-bottom: 0; font-size: 16px">Код: ${task._id}</p>
                 <p class="datetime">Доступно з ${formatDateTime(task.time_start)} до ${formatDateTime(task.time_end)}</p>
             </div>   
-            <div class="done-mark">
-            12
-            </div>
+<!--            <div class="done-mark">-->
+<!--            -->
+<!--            </div>-->
             </div>
             `;
         }

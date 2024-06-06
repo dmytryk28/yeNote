@@ -23,7 +23,12 @@ class TaskRepository:
 
     def get_teacher_tasks(self, teacher_id):
         tasks = self.db.task.find({"teacher_id": ObjectId(teacher_id)})
-        return [strings_to_ids(task) for task in tasks]
+        task_list = []
+        for task in tasks:
+            if 'students' in task:
+                task['students'] = [str(student_id) for student_id in task['students']]
+            task_list.append(strings_to_ids(task))
+        return task_list
 
     def get_student_tasks(self, student_id):
         tasks = self.db.task.find({"students": ObjectId(student_id)})

@@ -297,47 +297,36 @@
         }
       }
     },
-    "/tasks/{taskId}/{studentId}": {
+    "/students_tasks/{student_id}/{task_id}": {
       "post": {
         "tags": [
           "Tasks"
         ],
-        "summary": "Add student to task",
-        "description": "Assign a student to a specific task",
-        "operationId": "addStudentToTask",
-        "produces": [
-          "application/json"
-        ],
+        "summary": "Connect student to task",
+        "description": "Associates a student with a task",
+        "operationId": "connectStudentTask",
         "parameters": [
           {
-            "name": "taskId",
+            "name": "student_id",
             "in": "path",
-            "description": "ID of the task",
+            "description": "ID of the student",
             "required": true,
             "type": "string"
           },
           {
-            "name": "studentId",
+            "name": "task_id",
             "in": "path",
-            "description": "ID of the student",
+            "description": "ID of the task",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
           "201": {
-            "description": "Student successfully added to task"
+            "description": "Successful connection of student to task"
           },
           "404": {
-            "description": "Task or student not found",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "error": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Student and task not connected"
           }
         }
       }

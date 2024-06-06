@@ -19,6 +19,12 @@ if (!task.length) {
 }
 
 document.getElementById("save-task").onclick = () => {
+    if (!("name" in task) || !("description" in task) || !("time_start" in task) || !("time_end" in task)
+        || task["name"] === '' || task["description"] === ''
+        || task["time_start"] === '' || task["time_end"] === '') {
+        alert('Заповніть усі поля');
+        return;
+    }
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '../api/v1/tasks/');
     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
@@ -48,11 +54,17 @@ queTypeSelect.addEventListener("change", () => {
 document.getElementById('save-question').onclick = () => {
     const selectElement = document.getElementById("type-ques");
     const questionDescription = document.getElementById('question-description');
+    const max_mark = document.getElementById('max-mark');
     const studentAnswer = document.getElementById('student-answer');
     const answersDiv = document.querySelector('.answer-stack');
     if (!questionDescription.value.trim()) {
         alert('Будь ласка, введіть питання.');
         questionDescription.focus();
+        return;
+    }
+    if (!max_mark.value.trim() || isNaN(max_mark.value.trim())) {
+        alert('Будь ласка, введіть бал.');
+        max_mark.focus();
         return;
     }
     if (selectElement.value === "0" && !studentAnswer.value.trim()) {
@@ -79,17 +91,18 @@ document.getElementById('save-question').onclick = () => {
         }
     }
     let que = {
-        question: questionDescription.value,
-        type: selectElement.options[selectElement.selectedIndex].value,
+        question: questionDescription.value.trim(),
+        max_mark: Number(max_mark.value),
+        type: Number(selectElement.options[selectElement.selectedIndex].value),
     };
     const questionDiv = document.createElement('div');
     questionDiv.className = 'question';
     questionDiv.textContent = que['question'];
 
-    if (que['type'] === '0') {
-        que['answer'] = studentAnswer.value;
+    if (que['type'] === 0) {
+        que['answer'] = studentAnswer.value.trim();
         addText(questionDiv, que['answer'], true);
-    } else if (que['type'] === '1') {
+    } else if (que['type'] === 1) {
         que['answers'] = [];
         const answerDiv = document.createElement('div');
         answerDiv.style.display = 'flex';
@@ -97,8 +110,8 @@ document.getElementById('save-question').onclick = () => {
         const inputs = answersDiv.querySelectorAll('.input-answer');
         answersDiv.querySelectorAll('input[type="radio"]').forEach((radio, index) => {
             if (radio.checked) que['index'] = index;
-            que['answers'].push(inputs[index].value);
-            addText(answerDiv, inputs[index].value, radio.checked);
+            que['answers'].push(inputs[index].value.trim());
+            addText(answerDiv, inputs[index].value.trim(), radio.checked);
         });
         questionDiv.appendChild(answerDiv);
     }
@@ -107,6 +120,8 @@ document.getElementById('save-question').onclick = () => {
     modal.style.display = "none";
     resetQuestionForm();
     console.log(task);
+    const total = document.getElementById('total-max-mark')
+    total.innerText = task['questions'].reduce((sum, question) => sum + question['max_mark'], 0);
 
     const questionContainerDiv = document.createElement('div');
     questionContainerDiv.className = 'question-container';
@@ -115,22 +130,23 @@ document.getElementById('save-question').onclick = () => {
     questionDiv.insertAdjacentElement('beforebegin', questionContainerDiv);
     questionContainerDiv.appendChild(questionDiv);
 
-
     const deleteButton = document.createElement('button');
     deleteButton.className = 'delete-answer';
     deleteButton.innerHTML = '<span style="font-size: 24px;">&#128465;</span>';
     deleteButton.onclick = () => {
         questionContainerDiv.remove();
         task['questions'] = task['questions'].filter(q => q !== que);
+        console.log(task);
+        total.innerText = task['questions'].reduce((sum, question) => sum + question['max_mark'], 0);
         toggleSaveButton();
     };
 
     questionDiv.insertAdjacentElement('afterend', deleteButton);
     const ratingDiv = document.createElement('div');
     ratingDiv.className = 'question-rating';
-    ratingDiv.innerHTML = 'Бал: <br> 1';
+    ratingDiv.innerHTML = `Бал: <br> ${que['max_mark']}`;
     deleteButton.insertAdjacentElement('beforebegin', ratingDiv);
- toggleSaveButton();
+    toggleSaveButton();
 }
 
 function addText(questionDiv, text, green) {
@@ -146,6 +162,7 @@ function addText(questionDiv, text, green) {
 function resetQuestionForm() {
     document.getElementById('question-description').value = '';
     document.getElementById('student-answer').value = '';
+    document.getElementById('max-mark').value = '';
     const answersDiv = document.querySelector('.answer-stack');
     const inputs = answersDiv.querySelectorAll('.input-answer');
     inputs.forEach(input => input.value = '');
@@ -180,9 +197,61 @@ document.querySelectorAll('.delete-answer').forEach(button => {
     addDeleteFunctionality(button);
 });
 
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+    getStorage,
+    ref,
+    uploadBytes,
+    getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
 document.getElementById("open-question-form").onclick = function () {
     modal.style.display = "block";
+
+    const firebaseConfig = {
+        apiKey: "Your-API-Key",
+        authDomain: "Your-Auth-Domain",
+        projectId: "Your-Project-ID",
+        storageBucket: "Your-Storage-Bucket",
+        messagingSenderId: "Your-Messaging-Sender-ID",
+        appId: "Your-App-ID"
+    };
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+
+    async function uploadFile() {
+        const file = document.getElementById('file').files[0];
+        if (file) {
+            const fileType = file.type.split('/')[0];
+            if (fileType !== 'audio' && fileType !== 'image') {
+                alert('Дозволено завантажувати лише аудіо або зображення.');
+                return;
+            }
+            const folder = fileType === 'audio' ? 'audio/' : 'images/';
+            const storageRef = storage.ref().child(folder + file.name);
+            await storageRef.put(file);
+            const downloadURL = await storageRef.getDownloadURL();
+
+            if (fileType === 'audio') {
+                const audioElement = document.createElement('audio');
+                audioElement.controls = true;
+                audioElement.src = downloadURL;
+                document.body.insertBefore(document.getElementById('answer-format'), audioElement);
+            } else if (fileType === 'image') {
+                const imgElement = document.createElement('img');
+                imgElement.src = downloadURL;
+                document.body.insertBefore(document.getElementById('answer-format'), imgElement);
+            }
+
+            document.getElementById('add-image-audio').style.display = 'none';
+        } else {
+            alert('Оберіть файл.');
+        }
+    }
+
+    document.getElementById('add-image-audio').onclick = () => uploadFile();
 }
+
 
 document.querySelector(".close").onclick = function () {
     modal.style.display = "none";

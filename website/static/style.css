@@ -850,9 +850,9 @@ canvas {
 
 .my-task {
     border-top: 2px solid rgba(19, 34, 67, 0.22);
-    border-radius: 5px;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .my-task .name-1 {
