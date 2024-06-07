@@ -1,134 +1,105 @@
 {% extends "base.html" %}
 {% block title %}create_test{% endblock %}
 {% block content %}
-    <body class="create_test">
-    <div class="center-container">
-        <div style="display: flex; gap:130px;">
-            <div id="que-inputs" style="width: 70%; display: flex; flex-direction: column;">
-                <label for="test-name">Назва тесту</label>
-                <input style="height: 38px" id="test-name" type="text" placeholder="Введіть назву..." required/>
-
-                <label for="test-description">Опис тесту</label>
-                <textarea id="test-description" rows="3" style="resize: vertical;"
-                          placeholder="Введіть опис..."></textarea>
-
-                <label for="time-start">Тест відкритий</label>
-                <div class="datetime-container">
-                    <span>з</span>
-                    <input style="height: 38px" id="time-start" type="datetime-local"/>
-                    <span>до</span>
-                    <input style="height: 38px" id="time-end" type="datetime-local"/>
-                </div>
-                <div style="display: flex; align-content: center; gap: 15px">
-                    <label>Загальна кількість балів:</label>
-                    <p id="total-max-mark" style="font-size: 24px; font-weight: 500">0</p>
-                </div>
+<body class="create_test">
+<div class="center-container">
+    <div style="display: flex; gap:130px;">
+        <div id="que-inputs" style="width: 70%; display: flex; flex-direction: column;">
+            <label for="test-name">Назва тесту</label>
+            <input style="height: 38px" id="test-name" type="text" placeholder="Введіть назву..." required/>
+            <label for="test-description">Опис тесту</label>
+            <textarea id="test-description" rows="3" style="resize: vertical;" placeholder="Введіть опис..."></textarea>
+            <label for="time-start">Тест відкритий</label>
+            <div class="datetime-container">
+                <span>з</span>
+                <input style="height: 38px" id="time-start" type="datetime-local"/>
+                <span>до</span>
+                <input style="height: 38px" id="time-end" type="datetime-local"/>
             </div>
-        </div>
-        <hr>
-        <label>
-            Список питань:
-        </label>
-        <div class="question_list"></div>
-        <button id="open-question-form" class="container-2">Додати питання</button>
-        <button id="save-task" class="container-2" style="display: none">Зберегти завдання</button>
-
-
-        <div>
-            <p class="students-in-test">Учасники тесту</p>
-            <div style="display: flex; flex-wrap: wrap;">
-                <div class="student-test">
-                    <div>
-                        <p class="name-test">
-                            Прізвище ім'я
-                        </p>
-                        <p>
-                            lal@gmail.com
-                        </p>
-                    </div>
-                    <div class="done-mark">
-                        10
-                    </div>
-                </div>
-                <div class="student-test">
-                    <div>
-                        <p class="name-test">
-                            Прізвище ім'я
-                        </p>
-                        <p>
-                            lal@gmail.com
-                        </p>
-                    </div>
-                    <div class="done-mark">
-                        10
-                    </div>
-                </div>
-                <div class="student-test">
-                    <div>
-                        <p class="name-test">
-                            Прізвище ім'я
-                        </p>
-                        <p>
-                            lal@gmail.com
-                        </p>
-                    </div>
-                    <div class="done-mark">
-                        10
-                    </div>
-                </div>
+            <div style="display: flex; align-content: center; gap: 15px">
+                <label>Загальна кількість балів:</label>
+                <p id="total-max-mark" style="font-size: 24px; font-weight: 500">0</p>
             </div>
-        </div>
-
-
-    </div>
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div style="display: flex; gap: 50px">
-                <div style="display: flex; flex-direction: column; width: 70%">
-                    <label for="test-name">Питання</label>
-                    <textarea style="margin-bottom: 10px; resize: vertical;" id="question-description" rows="3"
-                              placeholder="Введіть питання..."></textarea>
-                    <div id="additional-files" style="display: flex; width: fit-content; gap:20px">
-                        <label for="file-upload" class="question-media">
-                            Додати зображення/аудіо
-                        </label>
-                        <input id="file-upload" type="file" style="display: none;">
-                        <button id="add-youtube" class="question-media">Додати Youtube відео</button>
-                    </div>
-                </div>
-
-                <div style="display: flex; flex-direction: column; width: 20%">
-                    <label for="max-mark">Бал</label>
-                    <input style="width: 100px; resize: vertical;" id="max-mark"
-                           placeholder="1">
-                </div>
-            </div>
-            <p id="answer-format">
-                Оберіть формат відповіді
-            </p>
-            <select id="type-ques">
-                <option value="0">Коротка текстова відповідь</option>
-                <option value="1">Одна правильна відповідь</option>
-            </select>
-            <div id="single-answer" class="answer-stack" style="display: none">
-                <div class="answer">
-                    <input class="checkmark" type="radio" name="contact" value="right-answer"/>
-                    <input style="height: 38px" class="input-answer" type="text" placeholder="Введіть питання..."
-                           required/>
-                </div>
-                <div class="answer">
-                    <input type="radio" name="contact" value="right-answer"/>
-                    <input style="height: 38px" class="input-answer" type="text" placeholder="Введіть питання..."
-                           required/>
-                </div>
-                <button class="add-answer">Додати варіант відповіді</button>
-            </div>
-            <textarea style="margin-bottom: 10px; resize: vertical;" id="student-answer" rows="3"
-                      placeholder="Відповідь студента..."></textarea>
-            <button id="save-question" class="container-2">Зберегти питання</button>
         </div>
     </div>
-    </body>
-    <script  type="module" src="../static/js/create_test.js"></script>
+    <hr>
+    <label>Список питань:</label>
+    <div class="question_list"></div>
+    <button id="open-question-form" class="container-2">Додати питання</button>
+    <button id="save-task" class="container-2" style="display: none">Зберегти завдання</button>
+    <div>
+        <p class="students-in-test">Учасники тесту</p>
+        <div style="display: flex; flex-wrap: wrap;">
+            <div class="student-test">
+                <div>
+                    <p class="name-test">Прізвище ім'я</p>
+                    <p>lal@gmail.com</p>
+                </div>
+                <div class="done-mark">10</div>
+            </div>
+            <div class="student-test">
+                <div>
+                    <p class="name-test">Прізвище ім'я</p>
+                    <p>lal@gmail.com</p>
+                </div>
+                <div class="done-mark">10</div>
+            </div>
+            <div class="student-test">
+                <div>
+                    <p class="name-test">Прізвище ім'я</p>
+                    <p>lal@gmail.com</p>
+                </div>
+                <div class="done-mark">10</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div style="display: flex; gap: 50px">
+            <div style="display: flex; flex-direction: column; width: 70%">
+                <label for="test-name">Питання</label>
+                <textarea style="margin-bottom: 10px; resize: vertical;" id="question-description" rows="3"
+                          placeholder="Введіть питання..."></textarea>
+                <div id="additional-files" style="display: flex; width: fit-content; gap:20px">
+                    <label for="file-upload" class="question-media">
+                        Додати зображення/аудіо
+                    </label>
+                    <input id="file-upload" type="file" style="display: none;">
+                    <button id="add-youtube" class="question-media">Додати Youtube відео</button>
+                </div>
+                <input type="text" id="youtube-link" placeholder="Введіть посилання на YouTube" style="display: none;">
+                <button id="youtube-confirm" class="question-media" style="display: none;">Підтвердити</button>
+            </div>
+            <div style="display: flex; flex-direction: column; width: 20%">
+                <label for="max-mark">Бал</label>
+                <input style="width: 100px; resize: vertical;" id="max-mark" placeholder="1">
+            </div>
+        </div>
+        <p id="answer-format">Оберіть формат відповіді</p>
+        <select id="type-ques">
+            <option value="0">Коротка текстова відповідь</option>
+            <option value="1">Одна правильна відповідь</option>
+        </select>
+        <div id="single-answer" class="answer-stack" style="display: none">
+            <div class="answer">
+                <input class="checkmark" type="radio" name="contact" value="right-answer"/>
+                <input style="height: 38px" class="input-answer" type="text" placeholder="Введіть питання..."
+                       required/>
+            </div>
+            <div class="answer">
+                <input type="radio" name="contact" value="right-answer"/>
+                <input style="height: 38px" class="input-answer" type="text" placeholder="Введіть питання..."
+                       required/>
+            </div>
+            <button class="add-answer">Додати варіант відповіді</button>
+        </div>
+        <textarea style="margin-bottom: 10px; resize: vertical;" id="student-answer" rows="3"
+                  placeholder="Відповідь студента..."></textarea>
+        <button id="save-question" class="container-2">Зберегти питання</button>
+    </div>
+</div>
+</body>
+<script type="module" src="../static/js/create_test.js"></script>
 {% endblock %}

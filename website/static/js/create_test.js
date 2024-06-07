@@ -30,9 +30,8 @@ document.getElementById("save-task").onclick = () => {
     const storage = getStorage(app);
 
     const uploadTasks = task.questions.map(async (que) => {
-        if (que.tempFileURL) {
+        if ('tempFileURL' in que) {
             const file = que.tempFileURL;
-            console.log(file);
             const fileType = file.type.split('/')[0];
             const folder = fileType === 'audio' ? 'audio/' : 'images/';
             const storageRef = ref(storage, folder + file.name);
@@ -71,12 +70,43 @@ queTypeSelect.addEventListener("change", () => {
     }
 });
 
+document.getElementById("add-youtube").addEventListener("click", function () {
+    const youtubeLinkInput = document.getElementById("youtube-link");
+    const youtubeConfirmButton = document.getElementById("youtube-confirm");
+    youtubeLinkInput.style.display = "block";
+    youtubeConfirmButton.style.display = "block";
+});
+
+document.getElementById("youtube-confirm").addEventListener("click", function () {
+    const youtubeLinkInput = document.getElementById("youtube-link");
+    const youtubeLink = youtubeLinkInput.value.trim();
+    const youtubeId = youtubeLink.split('v=')[1];
+    const additionalFilesDiv = document.getElementById("additional-files");
+
+    if (youtubeId) {
+        const iframe = document.createElement("iframe");
+        iframe.width = "560";
+        iframe.height = "315";
+        iframe.src = `https://www.youtube.com/embed/${youtubeId}`;
+        iframe.frameBorder = "0";
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iframe.allowFullscreen = true;
+        additionalFilesDiv.innerHTML = '';
+        additionalFilesDiv.appendChild(iframe);
+        youtubeLinkInput.style.display = "none";
+        document.getElementById("youtube-confirm").style.display = "none";
+    } else {
+        alert("Невірне посилання на YouTube");
+    }
+});
+
 document.getElementById('save-question').onclick = () => {
     const selectElement = document.getElementById("type-ques");
     const questionDescription = document.getElementById('question-description');
     const max_mark = document.getElementById('max-mark');
     const studentAnswer = document.getElementById('student-answer');
     const answersDiv = document.querySelector('.answer-stack');
+    const youtubeLinkInput = document.getElementById("youtube-link");
     if (!questionDescription.value.trim()) {
         alert('Будь ласка, введіть питання.');
         questionDescription.focus();
@@ -110,12 +140,20 @@ document.getElementById('save-question').onclick = () => {
             return;
         }
     }
+
     let que = {
         question: questionDescription.value.trim(),
         max_mark: Number(max_mark.value),
         type: Number(selectElement.options[selectElement.selectedIndex].value),
-        tempFileURL: tempFile,
     };
+
+    if (tempFile) que.tempFileURL = tempFile;
+
+    if (youtubeLinkInput.style.display === "none" && youtubeLinkInput.value.trim()) {
+        const youtubeLink = youtubeLinkInput.value.trim();
+        que.youtube = youtubeLink.split('v=')[1];
+    }
+
     const questionDiv = document.createElement('div');
     questionDiv.className = 'question';
     questionDiv.textContent = que['question'];
@@ -146,7 +184,6 @@ document.getElementById('save-question').onclick = () => {
 
     const questionContainerDiv = document.createElement('div');
     questionContainerDiv.className = 'question-container';
-
 
     questionDiv.insertAdjacentElement('beforebegin', questionContainerDiv);
     questionContainerDiv.appendChild(questionDiv);
@@ -197,7 +234,7 @@ function resetQuestionForm() {
     </label>
     <input id="file-upload" type="file" style="display: none;">
     <button id="add-youtube" class="question-media">Додати Youtube відео</button>
-    `
+    `;
     studentAnswer.style.display = "block";
     singleAnswer.style.display = "none";
 }
@@ -254,7 +291,7 @@ document.querySelector(".close").onclick = function () {
 }
 
 window.onclick = function (event) {
-    if (event.target == modal) {
+    if (event.target === modal) {
         modal.style.display = "none";
     }
 }
