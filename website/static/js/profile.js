@@ -49,9 +49,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 <!--            </div>-->
             </div>
             `;
-            myTask.onclick = () => {
-                window.location.href = `${(user.role === 'Викладач') ? 'teacher' : 'student'}/${task._id}`;
-            };
+            myTask.querySelectorAll('.name-1, .description').forEach(el => {
+                el.onclick = () => {
+                    window.location.href = `${(user.role === 'Викладач') ? 'teacher' : 'student'}/${task._id}`;
+                };
+            })
             document.getElementById('my-tasks').appendChild(myTask);
         }
     }

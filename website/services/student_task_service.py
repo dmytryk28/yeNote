@@ -10,3 +10,6 @@ class StudentTaskService:
 
     def get_student_tasks(self, student_id):
         return self.student_task_repository.get_student_tasks(student_id)
+
+    def get_students_with_task(self, task_id):
+        return self.student_task_repository.get_students_with_task(task_id)

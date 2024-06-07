@@ -1,18 +1,6 @@
 const user = JSON.parse(localStorage.getItem('user'));
 const showModalButton = document.getElementById("showModalBtn");
 
-window.addEventListener('DOMContentLoaded', (event) => {
-    const pathRegex = /\/task\/\d+/;
-    if (pathRegex.test(window.location.pathname)) {
-        const pianoDiv = document.createElement('div');
-        pianoDiv.className = 'text';
-        pianoDiv.textContent = 'Піаніно';
-        const container1 = document.querySelector(".container-1");
-        const textHead = document.querySelector(".text-head");
-        textHead.insertBefore(pianoDiv, container1);
-    }
-});
-
 if (user.role) {
     if (user.role === "Викладач") {
         showModalButton.style.display = "block";

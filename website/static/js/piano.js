@@ -1,3 +1,13 @@
+document.getElementById('piano-down').style.display = 'block';
+document.getElementById('piano-down').addEventListener('click', function () {
+    const pianoContainer = document.querySelector('.piano-container');
+    if (pianoContainer.style.maxHeight) {
+        pianoContainer.style.maxHeight = null;
+    } else {
+        pianoContainer.style.maxHeight = pianoContainer.scrollHeight + "px";
+    }
+});
+
 function playSound(note) {
     let audio = new Audio('/static/notes/' + note + '.wav');
     audio.volume = 1; // Встановлюємо гучність на максимум

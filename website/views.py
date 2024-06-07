@@ -10,7 +10,7 @@ def home():
 
 @views.route('/task/<int:number>')
 def task(number):
-    return render_template("task.html", num=number)
+    return render_template("task.html", task_id=None)
 
 
 @views.route('/signup')
@@ -40,4 +40,4 @@ def show_test_teacher(task_id):
 
 @views.route('/student/<task_id>')
 def show_test_student(task_id):
-    ...
+    return render_template("task.html", task_id=task_id)

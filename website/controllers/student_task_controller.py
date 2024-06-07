@@ -15,3 +15,8 @@ def connect_student_task(student_id, task_id):
 @student_task_blueprint.route('/student/<student_id>', methods=['GET'])
 def get_student_tasks(student_id):
     return jsonify(student_task_service.get_student_tasks(student_id)), 200
+
+
+@student_task_blueprint.route('/task/<task_id>', methods=['GET'])
+def get_students_with_task(task_id):
+    return jsonify(student_task_service.get_students_with_task(task_id)), 200

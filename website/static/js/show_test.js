@@ -57,3 +57,35 @@ for (const que of task.questions) {
     ratingDiv.innerHTML = `Бал: <br> ${que['max_mark']}`;
     questionContainerDiv.appendChild(ratingDiv);
 }
+
+let students = [];
+try {
+    const response = await fetch(`/api/v1/students_tasks/task/${taskId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8'
+        }
+    });
+    if (response.ok) {
+        students = await response.json();
+        console.log(students);
+    } else {
+        alert('Сталася помилка 1');
+    }
+} catch (error) {
+    alert('Сталася помилка 2');
+}
+
+const studentsWithTask = document.getElementById('students-with-test');
+if (!students.length) studentsWithTask.innerHTML = '<p>Іще ніхто не доєднався</p>';
+else for (const student of students) {
+    studentsWithTask.innerHTML += `
+    <div class="student-test">
+        <div>
+            <p class="name-test">${student.name} ${student.surname}</p>
+            <p>${student.email}</p>
+        </div>
+<!--        <div class="done-mark">10</div>-->
+    </div>
+    `;
+}

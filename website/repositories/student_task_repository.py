@@ -20,3 +20,12 @@ class StudentTaskRepository:
         tasks = self.db.task.find({"_id": {"$in": task_ids}})
         return oids_to_strings(tasks)
 
+    def get_students_with_task(self, task_id):
+        student_tasks = self.db.students_tasks.find({"task_id": ObjectId(task_id)})
+        student_ids = [st['student_id'] for st in student_tasks]
+        students = self.db.user.find({"_id": {"$in": student_ids}})
+        students = oids_to_strings(students)
+        for student in students:
+            student.pop('password')
+        return students
+
