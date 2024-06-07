@@ -70,35 +70,66 @@ queTypeSelect.addEventListener("change", () => {
     }
 });
 
-document.getElementById("add-youtube").addEventListener("click", function () {
-    const youtubeLinkInput = document.getElementById("youtube-link");
-    const youtubeConfirmButton = document.getElementById("youtube-confirm");
-    youtubeLinkInput.style.display = "block";
-    youtubeConfirmButton.style.display = "block";
-});
+function mediaListeners() {
 
-document.getElementById("youtube-confirm").addEventListener("click", function () {
-    const youtubeLinkInput = document.getElementById("youtube-link");
-    const youtubeLink = youtubeLinkInput.value.trim();
-    const youtubeId = youtubeLink.split('v=')[1];
-    const additionalFilesDiv = document.getElementById("additional-files");
+    document.getElementById('file-upload').addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const fileType = file.type.split('/')[0];
+            if (fileType !== 'audio' && fileType !== 'image') {
+                alert('Дозволено завантажувати лише аудіо або зображення.');
+                return;
+            }
 
-    if (youtubeId) {
-        const iframe = document.createElement("iframe");
-        iframe.width = "560";
-        iframe.height = "315";
-        iframe.src = `https://www.youtube.com/embed/${youtubeId}`;
-        iframe.frameBorder = "0";
-        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-        iframe.allowFullscreen = true;
-        additionalFilesDiv.innerHTML = '';
-        additionalFilesDiv.appendChild(iframe);
-        youtubeLinkInput.style.display = "none";
-        document.getElementById("youtube-confirm").style.display = "none";
-    } else {
-        alert("Невірне посилання на YouTube");
-    }
-});
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const result = e.target.result;
+                if (fileType === 'audio') {
+                    const audioElement = document.createElement('audio');
+                    audioElement.controls = true;
+                    audioElement.src = result;
+                    document.getElementById('additional-files').innerHTML = audioElement.outerHTML;
+                } else if (fileType === 'image') {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = result;
+                    document.getElementById('additional-files').innerHTML = imgElement.outerHTML;
+                }
+            };
+            reader.readAsDataURL(file);
+            tempFile = file; // зберігання вибраного файлу в тимчасову змінну
+        } else {
+            alert('Оберіть файл.');
+        }
+    });
+
+    document.getElementById("add-youtube").addEventListener("click", function () {
+        document.getElementById("youtube-link").style.display = "block";
+        document.getElementById("youtube-confirm").style.display = "block";
+    });
+
+    document.getElementById("youtube-confirm").addEventListener("click", function () {
+        const youtubeLinkInput = document.getElementById("youtube-link");
+        const youtubeLink = youtubeLinkInput.value.trim();
+        const youtubeId = youtubeLink.split('v=')[1];
+        const additionalFilesDiv = document.getElementById("additional-files");
+
+        if (youtubeId) {
+            const iframe = document.createElement("iframe");
+            iframe.width = "560";
+            iframe.height = "315";
+            iframe.src = `https://www.youtube.com/embed/${youtubeId}`;
+            iframe.frameBorder = "0";
+            iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+            iframe.allowFullscreen = true;
+            additionalFilesDiv.innerHTML = '';
+            additionalFilesDiv.appendChild(iframe);
+            youtubeLinkInput.style.display = "none";
+            document.getElementById("youtube-confirm").style.display = "none";
+        } else {
+            alert("Невірне посилання на YouTube");
+        }
+    });
+}
 
 document.getElementById('save-question').onclick = () => {
     const selectElement = document.getElementById("type-ques");
@@ -107,6 +138,7 @@ document.getElementById('save-question').onclick = () => {
     const studentAnswer = document.getElementById('student-answer');
     const answersDiv = document.querySelector('.answer-stack');
     const youtubeLinkInput = document.getElementById("youtube-link");
+
     if (!questionDescription.value.trim()) {
         alert('Будь ласка, введіть питання.');
         questionDescription.focus();
@@ -160,7 +192,7 @@ document.getElementById('save-question').onclick = () => {
 
     if (que['type'] === 0) {
         que['answer'] = studentAnswer.value.trim();
-        addText(questionDiv, que['answer'], true);
+        addText(questionDiv, que['answer'], true, que);
     } else if (que['type'] === 1) {
         que['answers'] = [];
         const answerDiv = document.createElement('div');
@@ -170,7 +202,7 @@ document.getElementById('save-question').onclick = () => {
         answersDiv.querySelectorAll('input[type="radio"]').forEach((radio, index) => {
             if (radio.checked) que['index'] = index;
             que['answers'].push(inputs[index].value.trim());
-            addText(answerDiv, inputs[index].value.trim(), radio.checked);
+            addText(questionDiv, inputs[index].value.trim(), radio.checked, que);
         });
         questionDiv.appendChild(answerDiv);
     }
@@ -207,7 +239,7 @@ document.getElementById('save-question').onclick = () => {
     toggleSaveButton();
 }
 
-function addText(questionDiv, text, green) {
+function addText(questionDiv, text, green, question) {
     const p = document.createElement('p');
     p.innerText = text;
     if (green) {
@@ -215,6 +247,95 @@ function addText(questionDiv, text, green) {
         p.style.textDecoration = 'underline';
     }
     questionDiv.appendChild(p);
+    questionDiv.addEventListener('click', () => openQuestionInForm(question));
+    console.log(question);
+}
+
+function openQuestionInForm(question) {
+    document.getElementById('question-description').value = question.question;
+    document.getElementById('max-mark').value = question.max_mark;
+    document.getElementById('type-ques').value = question.type;
+
+    const studentAnswer = document.getElementById("student-answer");
+    const singleAnswer = document.getElementById("single-answer");
+    const additionalFilesDiv = document.getElementById("additional-files");
+
+    if (question.type === 0) {
+        studentAnswer.value = question.answer || '';
+        studentAnswer.style.display = "block";
+        singleAnswer.style.display = "none";
+    } else if (question.type === 1) {
+        studentAnswer.style.display = "none";
+        singleAnswer.style.display = "block";
+
+        // Clear previous answers
+        singleAnswer.innerHTML = '';
+        question.answers.forEach((ans, idx) => {
+            const answerDiv = document.createElement('div');
+            answerDiv.className = 'answer';
+            answerDiv.innerHTML = `
+                <input class="checkmark" type="radio" name="contact" value="right-answer" ${idx === question.index ? 'checked' : ''}/>
+                <input style="height: 38px" class="input-answer" type="text" placeholder="Введіть питання..." value="${ans}" required/>
+            `;
+            singleAnswer.appendChild(answerDiv);
+        });
+    }
+
+    // Display YouTube video if present
+    if (question.youtube) {
+        const iframe = document.createElement("iframe");
+        iframe.width = "560";
+        iframe.height = "315";
+        iframe.src = `https://www.youtube.com/embed/${question.youtube}`;
+        iframe.frameBorder = "0";
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iframe.allowFullscreen = true;
+        additionalFilesDiv.innerHTML = '';
+        additionalFilesDiv.appendChild(iframe);
+    } else if (question.tempFileURL) {
+        const file = question.tempFileURL;
+        const fileType = file.type.split('/')[0];
+        if (fileType !== 'audio' && fileType !== 'image') {
+            alert('Дозволено завантажувати лише аудіо або зображення.');
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const result = e.target.result;
+            if (fileType === 'audio') {
+                const audioElement = document.createElement('audio');
+                audioElement.controls = true;
+                audioElement.src = result;
+                document.getElementById('additional-files').innerHTML = audioElement.outerHTML;
+            } else if (fileType === 'image') {
+                const imgElement = document.createElement('img');
+                imgElement.src = result;
+                document.getElementById('additional-files').innerHTML = imgElement.outerHTML;
+            }
+        };
+        reader.readAsDataURL(file); // Assuming tempFileURL contains a 'url' property for displaying
+
+    } else {
+        additionalFilesDiv.innerHTML = `
+            <label for="file-upload" class="question-media">
+                Додати зображення/аудіо
+            </label>
+            <input id="file-upload" type="file" style="display: none;">
+            <button id="add-youtube" class="question-media">Додати Youtube відео</button>
+        `;
+    }
+
+    // Disable all form inputs
+    formFields(true);
+
+    modal.style.display = "block";
+}
+
+function formFields(disabled) {
+    const inputs = modal.querySelectorAll('input, textarea, select, button');
+    inputs.forEach(input => {
+        input.disabled = disabled;
+    });
 }
 
 function resetQuestionForm() {
@@ -237,6 +358,10 @@ function resetQuestionForm() {
     `;
     studentAnswer.style.display = "block";
     singleAnswer.style.display = "none";
+    const youtubeLink = document.getElementById("youtube-link");
+    youtubeLink.value = '';
+    youtubeLink.style.display = "none";
+    document.getElementById("youtube-confirm").style.display = "none";
 }
 
 document.querySelector('.add-answer').onclick = function (event) {
@@ -284,15 +409,19 @@ const app = initializeApp(firebaseConfig);
 
 document.getElementById("open-question-form").onclick = function () {
     modal.style.display = "block";
+    mediaListeners();
+    formFields(false);
 }
 
 document.querySelector(".close").onclick = function () {
     modal.style.display = "none";
+    resetQuestionForm();
 }
 
 window.onclick = function (event) {
     if (event.target === modal) {
         modal.style.display = "none";
+        resetQuestionForm();
     }
 }
 
@@ -306,33 +435,3 @@ function toggleSaveButton() {
 }
 
 let tempFile = null;
-
-document.getElementById('file-upload').addEventListener('change', function () {
-    const file = this.files[0];
-    if (file) {
-        const fileType = file.type.split('/')[0];
-        if (fileType !== 'audio' && fileType !== 'image') {
-            alert('Дозволено завантажувати лише аудіо або зображення.');
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            const result = e.target.result;
-            if (fileType === 'audio') {
-                const audioElement = document.createElement('audio');
-                audioElement.controls = true;
-                audioElement.src = result;
-                document.getElementById('additional-files').innerHTML = audioElement.outerHTML;
-            } else if (fileType === 'image') {
-                const imgElement = document.createElement('img');
-                imgElement.src = result;
-                document.getElementById('additional-files').innerHTML = imgElement.outerHTML;
-            }
-        };
-        reader.readAsDataURL(file);
-        tempFile = file; // зберігання вибраного файлу в тимчасову змінну
-    } else {
-        alert('Оберіть файл.');
-    }
-});

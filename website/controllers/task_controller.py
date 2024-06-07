@@ -18,11 +18,6 @@ def get_teacher_tasks(teacher_id):
     return jsonify(task_service.get_teacher_tasks(teacher_id)), 200
 
 
-@task_blueprint.route('/student/<student_id>', methods=['GET'])
-def get_student_tasks(student_id):
-    return jsonify(task_service.get_student_tasks(student_id)), 200
-
-
 @task_blueprint.route('/<task_id>/<student_id>', methods=['POST'])
 def add_student_to_task(task_id, student_id):
     if task_service.add_student_to_task(task_id, student_id):

@@ -1,12 +1,6 @@
 from bson import ObjectId
 from website import yenote_db
-
-
-def strings_to_ids(s_t):
-    s_t['_id'] = str(s_t['_id'])
-    s_t['student_id'] = str(s_t['student_id'])
-    s_t['task_id'] = str(s_t['task_id'])
-    return s_t
+from .task_repository import oids_to_strings
 
 
 class StudentTaskRepository:
@@ -20,4 +14,9 @@ class StudentTaskRepository:
         })
         return True
 
+    def get_student_tasks(self, student_id):
+        student_tasks = self.db.students_tasks.find({"student_id": ObjectId(student_id)})
+        task_ids = [st['task_id'] for st in student_tasks]
+        tasks = self.db.task.find({"_id": {"$in": task_ids}})
+        return oids_to_strings(tasks)
 

@@ -13,7 +13,9 @@ def create_app():
     from .views import views
     from .controllers.user_controller import user_blueprint
     from .controllers.task_controller import task_blueprint
+    from .controllers.student_task_controller import student_task_blueprint
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(user_blueprint, url_prefix='/api/v1/users')
     app.register_blueprint(task_blueprint, url_prefix='/api/v1/tasks')
+    app.register_blueprint(student_task_blueprint, url_prefix='/api/v1/students_tasks')
     return app

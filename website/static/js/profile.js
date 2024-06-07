@@ -4,8 +4,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let myTasks = [];
     try {
+        let url = 'api/v1/';
+        if (user.role === 'Викладач') url += 'tasks/teacher/';
+        else url += 'students_tasks/student/';
+        url += user._id;
         const response
-            = await fetch(`../api/v1/tasks/${(user.role === 'Викладач') ? 'teacher' : 'student'}/${user._id}`, {
+            = await fetch(url, {
             method: 'GET',
             headers: {'Content-Type': 'application/json;charset=UTF-8'}
         });
@@ -30,8 +34,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function showMyTasks(myTasks) {
-        for (task of myTasks) {
-            document.getElementById('my-tasks').innerHTML += `
+        for (const task of myTasks) {
+            const myTask = document.createElement('div');
+            myTask.innerHTML = `
             <div class="my-task">
             <div style="width: 70%">
                 <p class="name-1">${task.name}</p>
@@ -44,6 +49,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 <!--            </div>-->
             </div>
             `;
+            myTask.onclick = () => {
+                window.location.href = `${(user.role === 'Викладач') ? 'teacher' : 'student'}/${task._id}`;
+            };
+            document.getElementById('my-tasks').appendChild(myTask);
         }
     }
 

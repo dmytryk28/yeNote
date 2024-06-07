@@ -1,11 +1,19 @@
 from bson import ObjectId
+from pymongo.cursor import Cursor
+
 from website import yenote_db
 
 
-def strings_to_ids(task):
-    task['_id'] = str(task['_id'])
-    task['teacher_id'] = str(task['teacher_id'])
-    return task
+def oids_to_strings(data):
+    if isinstance(data, ObjectId):
+        return str(data)
+    elif isinstance(data, dict):
+        return {k: oids_to_strings(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [oids_to_strings(item) for item in data]
+    elif isinstance(data, Cursor):
+        return [oids_to_strings(item) for item in data]
+    return data
 
 
 class TaskRepository:
@@ -19,24 +27,11 @@ class TaskRepository:
     def get_task(self, task_id):
         task = self.db.user.find_one({"_id": ObjectId(task_id)})
         if task:
-            return strings_to_ids(task)
+            return oids_to_strings(task)
 
     def get_teacher_tasks(self, teacher_id):
         tasks = self.db.task.find({"teacher_id": ObjectId(teacher_id)})
-        task_list = []
-        for task in tasks:
-            if 'students' in task:
-                task['students'] = [str(student_id) for student_id in task['students']]
-            task_list.append(strings_to_ids(task))
-        return task_list
-
-    def get_student_tasks(self, student_id):
-        tasks = self.db.task.find({"students": ObjectId(student_id)})
-        task_list = []
-        for task in tasks:
-            task.pop('students')
-            task_list.append(strings_to_ids(task))
-        return task_list
+        return oids_to_strings(tasks)
 
     def add_student_to_task(self, task_id, student_id):
         result = self.db.task.update_one(

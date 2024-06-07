@@ -11,3 +11,7 @@ def connect_student_task(student_id, task_id):
         return '', 201
     return jsonify({"error": "student and task not connected"}), 404
 
+
+@student_task_blueprint.route('/student/<student_id>', methods=['GET'])
+def get_student_tasks(student_id):
+    return jsonify(student_task_service.get_student_tasks(student_id)), 200
