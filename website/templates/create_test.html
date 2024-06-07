@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}create_test{% endblock %}
+{% block title %}{{ 'Огляд тесту' if task_id else 'Створити тест' }}{% endblock %}
 {% block content %}
 <body class="create_test">
 <div class="center-container">
@@ -102,4 +102,7 @@
 </div>
 </body>
 <script type="module" src="../static/js/create_test.js"></script>
+{% if task_id %}
+	<script type="module" src="../static/js/show_test.js"></script>
+{% endif %}
 {% endblock %}

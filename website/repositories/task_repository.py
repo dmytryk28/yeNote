@@ -25,20 +25,13 @@ class TaskRepository:
         return str(self.db.task.insert_one(data).inserted_id)
 
     def get_task(self, task_id):
-        task = self.db.user.find_one({"_id": ObjectId(task_id)})
+        task = self.db.task.find_one({"_id": ObjectId(task_id)})
         if task:
             return oids_to_strings(task)
 
     def get_teacher_tasks(self, teacher_id):
         tasks = self.db.task.find({"teacher_id": ObjectId(teacher_id)})
         return oids_to_strings(tasks)
-
-    def add_student_to_task(self, task_id, student_id):
-        result = self.db.task.update_one(
-            {"_id": ObjectId(task_id)},
-            {"$addToSet": {"students": ObjectId(student_id)}}
-        )
-        return result.modified_count == 1
 
     def delete_task(self, task_id):
         result = self.db.task.delete_one({"_id": ObjectId(task_id)})

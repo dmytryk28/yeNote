@@ -33,11 +33,12 @@ document.getElementById("save-task").onclick = () => {
         if ('tempFileURL' in que) {
             const file = que.tempFileURL;
             const fileType = file.type.split('/')[0];
-            const folder = fileType === 'audio' ? 'audio/' : 'images/';
-            const storageRef = ref(storage, folder + file.name);
+            const folder = fileType + '/';
+            const storageRef = ref(storage, folder + new Date().toISOString());
             await uploadBytes(storageRef, file);
-            que.file = await getDownloadURL(storageRef); // оновлення шляху файлу в об'єкті питання
-            delete que.tempFileURL; // видалення тимчасового покликання
+            const url = await getDownloadURL(storageRef);
+            que.file = url.substring(71);
+            delete que.tempFileURL;
         }
     });
 
@@ -84,16 +85,7 @@ function mediaListeners() {
             const reader = new FileReader();
             reader.onload = function (e) {
                 const result = e.target.result;
-                if (fileType === 'audio') {
-                    const audioElement = document.createElement('audio');
-                    audioElement.controls = true;
-                    audioElement.src = result;
-                    document.getElementById('additional-files').innerHTML = audioElement.outerHTML;
-                } else if (fileType === 'image') {
-                    const imgElement = document.createElement('img');
-                    imgElement.src = result;
-                    document.getElementById('additional-files').innerHTML = imgElement.outerHTML;
-                }
+                drawMedia(fileType, result);
             };
             reader.readAsDataURL(file);
             tempFile = file; // зберігання вибраного файлу в тимчасову змінну
@@ -211,7 +203,7 @@ document.getElementById('save-question').onclick = () => {
     modal.style.display = "none";
     resetQuestionForm();
     console.log(task);
-    const total = document.getElementById('total-max-mark')
+    const total = document.getElementById('total-max-mark');
     total.innerText = task['questions'].reduce((sum, question) => sum + question['max_mark'], 0);
 
     const questionContainerDiv = document.createElement('div');
@@ -239,7 +231,7 @@ document.getElementById('save-question').onclick = () => {
     toggleSaveButton();
 }
 
-function addText(questionDiv, text, green, question) {
+export function addText(questionDiv, text, green, question) {
     const p = document.createElement('p');
     p.innerText = text;
     if (green) {
@@ -292,50 +284,45 @@ function openQuestionInForm(question) {
         iframe.allowFullscreen = true;
         additionalFilesDiv.innerHTML = '';
         additionalFilesDiv.appendChild(iframe);
+    } else if ('file' in question) {
+        const file = question.file;
+        drawMedia(file.substring(0, 5), 'https://firebasestorage.googleapis.com/v0/b/yenote-71e1f.appspot.com/o/' + file);
     } else if (question.tempFileURL) {
         const file = question.tempFileURL;
-        const fileType = file.type.split('/')[0];
-        if (fileType !== 'audio' && fileType !== 'image') {
-            alert('Дозволено завантажувати лише аудіо або зображення.');
-            return;
-        }
         const reader = new FileReader();
         reader.onload = function (e) {
             const result = e.target.result;
-            if (fileType === 'audio') {
-                const audioElement = document.createElement('audio');
-                audioElement.controls = true;
-                audioElement.src = result;
-                document.getElementById('additional-files').innerHTML = audioElement.outerHTML;
-            } else if (fileType === 'image') {
-                const imgElement = document.createElement('img');
-                imgElement.src = result;
-                document.getElementById('additional-files').innerHTML = imgElement.outerHTML;
-            }
+            drawMedia(file.type.split('/')[0], result);
         };
         reader.readAsDataURL(file); // Assuming tempFileURL contains a 'url' property for displaying
 
     } else {
-        additionalFilesDiv.innerHTML = `
-            <label for="file-upload" class="question-media">
-                Додати зображення/аудіо
-            </label>
-            <input id="file-upload" type="file" style="display: none;">
-            <button id="add-youtube" class="question-media">Додати Youtube відео</button>
-        `;
+        additionalFilesDiv.innerHTML = '';
     }
-
-    // Disable all form inputs
     formFields(true);
-
     modal.style.display = "block";
 }
 
+
+function drawMedia(fileType, file) {
+    if (fileType === 'audio') {
+        const audioElement = document.createElement('audio');
+        audioElement.controls = true;
+        audioElement.src = file;
+        document.getElementById('additional-files').innerHTML = audioElement.outerHTML;
+    } else if (fileType === 'image') {
+        const imgElement = document.createElement('img');
+        imgElement.src = file;
+        document.getElementById('additional-files').innerHTML = imgElement.outerHTML;
+    }
+}
+
 function formFields(disabled) {
-    const inputs = modal.querySelectorAll('input, textarea, select, button');
+    const inputs = modal.querySelectorAll('input, textarea, select');
     inputs.forEach(input => {
         input.disabled = disabled;
     });
+    document.getElementById('save-question').style.display = disabled ? 'none' : 'block';
 }
 
 function resetQuestionForm() {

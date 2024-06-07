@@ -27,6 +27,17 @@ def authentication():
 def profile():
     return render_template("profile.html")
 
+
 @views.route('/create_test')
 def create_test():
-    return render_template("create_test.html")
+    return render_template("create_test.html", task_id=None)
+
+
+@views.route('/teacher/<task_id>')
+def show_test_teacher(task_id):
+    return render_template("create_test.html", task_id=task_id)
+
+
+@views.route('/student/<task_id>')
+def show_test_student(task_id):
+    ...

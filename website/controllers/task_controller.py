@@ -18,13 +18,6 @@ def get_teacher_tasks(teacher_id):
     return jsonify(task_service.get_teacher_tasks(teacher_id)), 200
 
 
-@task_blueprint.route('/<task_id>/<student_id>', methods=['POST'])
-def add_student_to_task(task_id, student_id):
-    if task_service.add_student_to_task(task_id, student_id):
-        return '', 201
-    return jsonify({"error": "task or student not found"}), 404
-
-
 @task_blueprint.route('/<task_id>', methods=['GET'])
 def get_task(task_id):
     task = task_service.get_task(task_id)

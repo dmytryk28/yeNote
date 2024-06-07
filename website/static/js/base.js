@@ -33,7 +33,7 @@ function hideModal() {
 
 showModalButton.onclick = function () {
     if (showModalButton.textContent === "Новий тест") {
-        window.location.href = "create_test";
+        window.location.href = "/create_test";
     } else {
         modalElement.style.display = "block";
     }
