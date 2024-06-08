@@ -45,6 +45,11 @@ section .option_list .option.incorrect {
     border: 2px solid #711c24;
 }
 
+section .option_list .option.selected {
+    color: #004085;
+    background: #b8daff;
+    border: 2px solid #004085;
+}
 
 section .option_list .option.disabled {
     pointer-events: none;
@@ -52,7 +57,7 @@ section .option_list .option.disabled {
 
 footer {
     height: 60px;
-    padding: 0 30px;
+    /*padding: 0 30px;*/
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -406,7 +411,7 @@ section .option_list .option {
     justify-content: flex-end
 }
 
-.next_btn, .exit_btn {
+.next_btn, .prev_btn, .exit_btn {
     margin-top: 10px;
     width: 15rem;
     font-size: 1.5rem;
@@ -699,14 +704,14 @@ canvas {
     font-weight: 500;
 }
 
-.create_test input, .create_test textarea {
+.create_test input, .create_test textarea, #my-answer {
     padding-left: 10px;
     border-radius: 10px;
     margin-bottom: 25px;
     border: 2px solid rgba(19, 34, 67, 0.71);
 }
 
-.create_test textarea {
+.create_test textarea, #my-answer {
     padding-top: 5px;
 }
 

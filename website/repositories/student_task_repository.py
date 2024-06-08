@@ -29,3 +29,16 @@ class StudentTaskRepository:
             student.pop('password')
         return students
 
+    def update_result(self, student_id, task_id, data):
+        self.db.students_tasks.update_one(
+            {"student_id": ObjectId(student_id), "task_id": ObjectId(task_id)},
+            {"$set": {"result": data}}
+        )
+        return True
+
+    def get_result(self, student_id, task_id):
+        result = self.db.students_tasks.find_one(
+            {"student_id": ObjectId(student_id), "task_id": ObjectId(task_id)}
+        )
+        return oids_to_strings(result)
+

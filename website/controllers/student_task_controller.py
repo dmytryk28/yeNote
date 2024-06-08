@@ -12,6 +12,22 @@ def connect_student_task(student_id, task_id):
     return jsonify({"error": "student and task not connected"}), 404
 
 
+@student_task_blueprint.route('/<student_id>/<task_id>', methods=['GET'])
+def get_result(student_id, task_id):
+    return jsonify(student_task_service.get_result(student_id, task_id)), 200
+
+
+@student_task_blueprint.route('/<student_id>/<task_id>', methods=['PUT'])
+def update_result(student_id, task_id):
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No input data provided"}), 400
+    res = student_task_service.update_result(student_id, task_id, data)
+    if res:
+        return '', 201
+    return jsonify({"error": "Connection not found"}), 404
+
+
 @student_task_blueprint.route('/student/<student_id>', methods=['GET'])
 def get_student_tasks(student_id):
     return jsonify(student_task_service.get_student_tasks(student_id)), 200

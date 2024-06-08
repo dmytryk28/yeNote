@@ -13,3 +13,9 @@ class StudentTaskService:
 
     def get_students_with_task(self, task_id):
         return self.student_task_repository.get_students_with_task(task_id)
+
+    def update_result(self, student_id, task_id, data):
+        return self.student_task_repository.update_result(student_id, task_id, data)
+
+    def get_result(self, student_id, task_id):
+        return self.student_task_repository.get_result(student_id, task_id)
