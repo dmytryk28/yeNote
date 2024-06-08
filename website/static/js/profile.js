@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function showMyTasks(myTasks) {
+        console.log(myTasks);
         for (const task of myTasks) {
             const myTask = document.createElement('div');
             myTask.innerHTML = `

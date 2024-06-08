@@ -2,26 +2,28 @@ const taskId = window.location.href.split('/')[4];
 let taskIndex = -1;
 const user = JSON.parse(localStorage.getItem('user'));
 
-let task = JSON.parse(localStorage.getItem('task'));
+let task = await getData(`tasks/${taskId}`);
+let results = [];
+results = await getData(`students_tasks/${user._id}/${taskId}`);
+const viewResults = 'result' in results;
 
-if (!task) {
+async function getData(url) {
     try {
-        const response = await fetch(`/api/v1/tasks/${taskId}`, {
+        const response = await fetch(`/api/v1/${url}`, {
             method: 'GET',
             headers: {'Content-Type': 'application/json;charset=UTF-8'}
         });
-        if (response.ok) {
-            task = await response.json();
-            localStorage.setItem('task', JSON.stringify(task));
-        } else {
-            alert('Сталася помилка 1');
-        }
+        if (response.ok) return await response.json();
+        else alert('Сталася помилка 1');
     } catch (error) {
         alert('Сталася помилка 2');
     }
 }
 
-
+if (viewResults) {
+    results = results.result;
+    startBtn.innerText = 'Переглянути';
+}
 
 const prevBtn = document.querySelector('.prev_btn');
 const optionList = document.querySelector('.option_list');
@@ -30,6 +32,7 @@ const numberOfQuestions = task.questions.length;
 const mediaDiv = document.getElementById('media');
 mediaDiv.style.marginTop = '12px';
 mediaDiv.style.marginBottom = '12px';
+const quizHeader = document.getElementById('quiz-header');
 let answers = [];
 for (let i = 0; i < numberOfQuestions; i++)
     answers.push({answer: undefined});
@@ -44,10 +47,27 @@ function formatDateTime(datetime) {
 document.querySelector(".test-name").textContent = task.name;
 const description = document.querySelector(".description");
 description.textContent = task.description;
-description.insertAdjacentHTML('afterend',
-    `<p class="datetime">Доступно з ${formatDateTime(task.time_start)} до ${formatDateTime(task.time_end)}</p>`);
+if (viewResults) {
+    const [f, s] = score();
+    description.insertAdjacentHTML('afterend',
+        `<p id="total-max-mark" style="font-size: 24px; font-weight: 500">Оцінка: <b>${f}/${s}</b></p>`);
+} else {
+    description.insertAdjacentHTML('afterend',
+        `<p class="datetime">Доступно з ${formatDateTime(task.time_start)} до ${formatDateTime(task.time_end)}</p>`);
+}
+
+function score() {
+    let myScore = 0;
+    let max = 0;
+    results.forEach((que, index) => {
+        myScore += que.score;
+        max += task.questions[index].max_mark;
+    });
+    return [myScore, max];
+}
 
 startBtn.onclick = () => {
+    quizHeader.insertAdjacentHTML('beforebegin', `<p id="score"></p>`);
     taskIndex = 0;
     clearScreen();
     repeatSimultaneouslyBtn.style.display = 'none';
@@ -100,6 +120,10 @@ function sendResult() {
 }
 
 endButton.onclick = () => {
+    if (results) {
+        location.reload();
+        return;
+    }
     computeResult();
     sendResult();
 }
@@ -117,6 +141,8 @@ function indexChange() {
         nextBtn.classList.add("show");
     }
     const question = task.questions[taskIndex];
+    document.getElementById('score').innerText = viewResults ? `Бали: ${results[taskIndex].score}/${question.max_mark}`
+        : `Бали: ${question.max_mark}`
     queText.innerText = question.question;
     optionList.innerHTML = '';
     addMedia(question);
@@ -126,6 +152,14 @@ function indexChange() {
             placeholder="Ваша відповідь" id="my-answer" rows="3"></textarea>
             `;
         const myAns = document.getElementById('my-answer');
+        if (viewResults) {
+            myAns.disabled = true;
+            myAns.value = results[taskIndex].answer;
+            if (results[taskIndex].score < question.max_mark)
+                myAns.style.backgroundColor = '#ffcdac'
+            else myAns.style.backgroundColor = '#d4edda'
+            return;
+        }
         if (answers[taskIndex].answer !== undefined)
             myAns.value = answers[taskIndex].answer;
         myAns.addEventListener('input', event => {
@@ -134,11 +168,18 @@ function indexChange() {
     } else if (question.type === 1) {
         question.answers.forEach((answer, index) => {
             const option = document.createElement('div');
+            option.classList.add("disabled");
             option.classList.add('option');
-            option.innerText = answer;
-            option.onclick = () => clickOption(option, index);
-            if (index === answers[taskIndex].answer) option.classList.add('selected');
             optionList.appendChild(option);
+            option.innerText = answer;
+            if (viewResults) {
+                if (index === question.index) option.classList.add('correct');
+                else if (index === results[taskIndex].answer) option.classList.add('incorrect');
+            } else {
+                option.onclick = () => clickOption(option, index);
+                if (index === answers[taskIndex].answer) option.classList.add('selected');
+            }
+
         });
     }
 }
