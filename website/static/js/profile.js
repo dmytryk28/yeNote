@@ -35,21 +35,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function showMyTasks(myTasks) {
         console.log(myTasks);
+        if (myTasks.length === 0) document.getElementById('my-tasks').innerHTML
+            += '<p>Тестів не знайдено</p>'
         for (const task of myTasks) {
             const myTask = document.createElement('div');
             myTask.innerHTML = `
             <div class="my-task">
-            <div style="width: 70%">
-                <p class="name-1">${task.name}</p>
-                <p class="description">${task.description}</p>
-                <p class="task-code" style="margin-bottom: 0; font-size: 16px">Код: ${task._id}</p>
-                <p class="datetime">Доступно з ${formatDateTime(task.time_start)} до ${formatDateTime(task.time_end)}</p>
-            </div>   
-<!--            <div class="done-mark">-->
-<!--            -->
-<!--            </div>-->
+                <div style="width: 70%">
+                    <p class="name-1">${task.name}</p>
+                    <p class="description">${task.description}</p>
+                    <p class="task-code" style="margin-bottom: 0; font-size: 16px">Код: ${task._id}</p>
+                    <p class="datetime">Доступно з ${formatDateTime(task.time_start)} до ${formatDateTime(task.time_end)}</p>
+                </div>
             </div>
             `;
+            if ('sum_score' in task)
+                myTask.querySelector('.my-task')
+                    .insertAdjacentHTML('beforeend',
+                        `<div class="done-mark">${task.sum_score}/${task.questions.reduce((sum, question) => sum + question['max_mark'], 0)}</div>`);
             myTask.querySelectorAll('.name-1, .description').forEach(el => {
                 el.onclick = () => {
                     window.location.href = `${(user.role === 'Викладач') ? 'teacher' : 'student'}/${task._id}`;

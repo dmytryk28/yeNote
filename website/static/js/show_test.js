@@ -79,13 +79,23 @@ try {
 const studentsWithTask = document.getElementById('students-with-test');
 if (!students.length) studentsWithTask.innerHTML = '<p>Іще ніхто не доєднався</p>';
 else for (const student of students) {
-    studentsWithTask.innerHTML += `
-    <div class="student-test">
+    const studentTask = document.createElement('div');
+    studentTask.className = 'student-test';
+    studentTask.innerHTML = `
         <div>
             <p class="name-test">${student.name} ${student.surname}</p>
             <p>${student.email}</p>
         </div>
-<!--        <div class="done-mark">10</div>-->
-    </div>
     `;
+    if ('sum_score' in student) {
+        studentTask.insertAdjacentHTML('beforeend',
+            `<div class="done-mark">${student.sum_score}/${document.getElementById('total-max-mark').innerText}</div>`);
+        studentTask.onclick = () => viewStudentTask(student._id);
+    } else studentTask.style.cursor = 'default';
+    studentsWithTask.insertAdjacentElement(student.sum_score ? 'afterbegin' : 'beforeend', studentTask);
+}
+
+function viewStudentTask(studentId) {
+    sessionStorage.setItem('studentId', studentId);
+    window.location.href = `/student/${task._id}`;
 }

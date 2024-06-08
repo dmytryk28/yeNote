@@ -171,7 +171,10 @@ document.getElementById('save-question').onclick = () => {
         type: Number(selectElement.options[selectElement.selectedIndex].value),
     };
 
-    if (tempFile) que.tempFileURL = tempFile;
+    if (tempFile) {
+        que.tempFileURL = tempFile;
+        tempFile = null;
+    }
 
     if (youtubeLinkInput.style.display === "none" && youtubeLinkInput.value.trim()) {
         const youtubeLink = youtubeLinkInput.value.trim();

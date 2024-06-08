@@ -1,6 +1,7 @@
 from bson import ObjectId
 from website import yenote_db
 from .task_repository import oids_to_strings
+from datetime import datetime
 
 
 class StudentTaskRepository:
@@ -15,24 +16,138 @@ class StudentTaskRepository:
         return True
 
     def get_student_tasks(self, student_id):
-        student_tasks = self.db.students_tasks.find({"student_id": ObjectId(student_id)})
-        task_ids = [st['task_id'] for st in student_tasks]
-        tasks = self.db.task.find({"_id": {"$in": task_ids}})
-        return oids_to_strings(tasks)
+        pipeline = [
+            {
+                "$match": {
+                    "student_id": ObjectId(student_id)
+                }
+            },
+            {
+                "$lookup": {
+                    "from": "task",
+                    "localField": "task_id",
+                    "foreignField": "_id",
+                    "as": "task"
+                }
+            },
+            {
+                "$unwind": "$task"
+            },
+            {
+                "$addFields": {
+                    "task.sum_score": {
+                        "$sum": {
+                            "$map": {
+                                "input": "$result",
+                                "as": "r",
+                                "in": {
+                                    "$convert": {
+                                        "input": "$$r.score",
+                                        "to": "int",
+                                        "onError": 0,
+                                        "onNull": 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "$replaceRoot": {
+                    "newRoot": {
+                        "$mergeObjects": ["$task", {"sum_score": "$task.sum_score"}]
+                    }
+                }
+            },
+            {
+                "$project": {
+                    "result": 0
+                }
+            }
+        ]
+
+        student_tasks = list(self.db.students_tasks.aggregate(pipeline))
+        return oids_to_strings(student_tasks)
 
     def get_students_with_task(self, task_id):
-        student_tasks = self.db.students_tasks.find({"task_id": ObjectId(task_id)})
-        student_ids = [st['student_id'] for st in student_tasks]
-        students = self.db.user.find({"_id": {"$in": student_ids}})
-        students = oids_to_strings(students)
-        for student in students:
-            student.pop('password')
-        return students
+        pipeline = [
+            {
+                "$match": {
+                    "task_id": ObjectId(task_id)
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$student_id",
+                    "sum_score": {
+                        "$sum": {
+                            "$sum": {
+                                "$map": {
+                                    "input": "$result",
+                                    "as": "r",
+                                    "in": {
+                                        "$convert": {
+                                            "input": "$$r.score",
+                                            "to": "int",
+                                            "onError": 0,
+                                            "onNull": 0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "$lookup": {
+                    "from": "user",
+                    "localField": "_id",
+                    "foreignField": "_id",
+                    "as": "student"
+                }
+            },
+            {
+                "$unwind": "$student"
+            },
+            {
+                "$addFields": {
+                    "student.sum_score": "$sum_score"
+                }
+            },
+            {
+                "$replaceRoot": {
+                    "newRoot": "$student"
+                }
+            },
+            {
+                "$project": {
+                    "password": 0
+                }
+            }
+        ]
+
+        students = list(self.db.students_tasks.aggregate(pipeline))
+        return oids_to_strings(students)
 
     def update_result(self, student_id, task_id, data):
+        existing_document = self.db.students_tasks.find_one(
+            {"student_id": ObjectId(student_id), "task_id": ObjectId(task_id)},
+            {"date_time": 1}
+        )
+        if existing_document and "date_time" not in existing_document:
+            self.db.students_tasks.update_one(
+                {"student_id": ObjectId(student_id), "task_id": ObjectId(task_id)},
+                {
+                    "$set": {"date_time": datetime.now().strftime("%H:%M:%S %d.%m.%Y")}
+                }
+            )
         self.db.students_tasks.update_one(
             {"student_id": ObjectId(student_id), "task_id": ObjectId(task_id)},
-            {"$set": {"result": data}}
+            {
+                "$set": {"result": data}
+            }
         )
         return True
 
@@ -41,4 +156,3 @@ class StudentTaskRepository:
             {"student_id": ObjectId(student_id), "task_id": ObjectId(task_id)}
         )
         return oids_to_strings(result)
-

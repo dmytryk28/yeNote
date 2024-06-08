@@ -1,12 +1,15 @@
 const taskId = window.location.href.split('/')[4];
 let taskIndex = -1;
 const user = JSON.parse(localStorage.getItem('user'));
-
+const isTeacher = user.role === 'Викладач';
+let editedByTeacher = false;
+const studentId = isTeacher
+    ? sessionStorage.getItem('studentId') : user._id;
 let task = await getData(`tasks/${taskId}`);
 let results = [];
-results = await getData(`students_tasks/${user._id}/${taskId}`);
-const viewResults = 'result' in results;
-
+results = await getData(`students_tasks/${studentId}/${taskId}`);
+const viewResults = 'date_time' in results;
+const datetime = results.date_time;
 async function getData(url) {
     try {
         const response = await fetch(`/api/v1/${url}`, {
@@ -21,8 +24,11 @@ async function getData(url) {
 }
 
 if (viewResults) {
-    results = results.result;
     startBtn.innerText = 'Переглянути';
+} else  {
+    const now = new Date();
+    if (new Date(task.time_start) > now || new Date(task.time_end) < now)
+        startBtn.style.display = 'none';
 }
 
 const prevBtn = document.querySelector('.prev_btn');
@@ -48,18 +54,19 @@ document.querySelector(".test-name").textContent = task.name;
 const description = document.querySelector(".description");
 description.textContent = task.description;
 if (viewResults) {
+    console.log(results);
     const [f, s] = score();
     description.insertAdjacentHTML('afterend',
-        `<p id="total-max-mark" style="font-size: 24px; font-weight: 500">Оцінка: <b>${f}/${s}</b></p>`);
-} else {
-    description.insertAdjacentHTML('afterend',
-        `<p class="datetime">Доступно з ${formatDateTime(task.time_start)} до ${formatDateTime(task.time_end)}</p>`);
+        `<p class="datetime">Час завершення: ${datetime}</p>
+            <p id="total-max-mark" style="font-size: 24px; font-weight: 500">Оцінка: <b>${f}/${s}</b></p>`);
 }
+description.insertAdjacentHTML('afterend',
+        `<p class="datetime">Доступно з ${formatDateTime(task.time_start)} до ${formatDateTime(task.time_end)}</p>`);
 
 function score() {
     let myScore = 0;
     let max = 0;
-    results.forEach((que, index) => {
+    results.result.forEach((que, index) => {
         myScore += que.score;
         max += task.questions[index].max_mark;
     });
@@ -67,7 +74,7 @@ function score() {
 }
 
 startBtn.onclick = () => {
-    quizHeader.insertAdjacentHTML('beforebegin', `<p id="score"></p>`);
+    quizHeader.insertAdjacentHTML('beforebegin', `<p style="display: flex; flex-direction: row" id="score"></p>`);
     taskIndex = 0;
     clearScreen();
     repeatSimultaneouslyBtn.style.display = 'none';
@@ -108,7 +115,7 @@ function computeResult() {
 
 function sendResult() {
     const xhr = new XMLHttpRequest();
-    xhr.open('PUT', `/api/v1/students_tasks/${user._id}/${taskId}`);
+    xhr.open('PUT', `/api/v1/students_tasks/${studentId}/${taskId}`);
     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -116,16 +123,49 @@ function sendResult() {
             else alert('Помилка');
         }
     };
-    xhr.send(JSON.stringify(answers));
+    if (editedByTeacher) xhr.send(JSON.stringify(results.result));
+    else xhr.send(JSON.stringify(answers));
 }
 
 endButton.onclick = () => {
-    if (results) {
-        location.reload();
-        return;
-    }
-    computeResult();
-    sendResult();
+    if (!viewResults) computeResult();
+    if (!viewResults || editedByTeacher) sendResult();
+    location.reload();
+}
+
+function updateScore(score) {
+    const changeDiv = document.createElement("div");
+    changeDiv.style.display = 'flex';
+    changeDiv.style.marginLeft = '6px';
+    changeDiv.innerHTML = `<input style="display: none; width: 40px;" type="text"><button>&#128221;</button>`;
+    const inp = changeDiv.querySelector('input');
+    changeDiv.querySelector('button').onclick = () => {
+        if (inp.style.display === 'none') {
+            inp.style.display = 'block';
+            inp.focus();
+        }
+        else {
+            const inpValue = Number(inp.value)
+            if (inp.value.length === 0 || isNaN(inpValue) || inpValue < 0
+                || inpValue > task.questions[taskIndex].max_mark) {
+                alert('Уведіть коректний бал');
+                inp.value = '';
+                inp.focus();
+            } else {
+                results.result[taskIndex].score = inpValue;
+                drawScore(score);
+                inp.style.display = 'none';
+                editedByTeacher = true;
+            }
+        }
+    };
+    score.appendChild(changeDiv);
+}
+
+function drawScore(score) {
+    score.innerText = viewResults ? `Бали: ${results.result[taskIndex].score}/${task.questions[taskIndex].max_mark}`
+        : `Бали: ${task.questions[taskIndex].max_mark}`;
+    if (isTeacher) updateScore(score);
 }
 
 function indexChange() {
@@ -141,8 +181,8 @@ function indexChange() {
         nextBtn.classList.add("show");
     }
     const question = task.questions[taskIndex];
-    document.getElementById('score').innerText = viewResults ? `Бали: ${results[taskIndex].score}/${question.max_mark}`
-        : `Бали: ${question.max_mark}`
+    const score = document.getElementById('score');
+    drawScore(score);
     queText.innerText = question.question;
     optionList.innerHTML = '';
     addMedia(question);
@@ -154,8 +194,8 @@ function indexChange() {
         const myAns = document.getElementById('my-answer');
         if (viewResults) {
             myAns.disabled = true;
-            myAns.value = results[taskIndex].answer;
-            if (results[taskIndex].score < question.max_mark)
+            myAns.value = results.result[taskIndex].answer;
+            if (results.result[taskIndex].score < question.max_mark)
                 myAns.style.backgroundColor = '#ffcdac'
             else myAns.style.backgroundColor = '#d4edda'
             return;
@@ -168,13 +208,13 @@ function indexChange() {
     } else if (question.type === 1) {
         question.answers.forEach((answer, index) => {
             const option = document.createElement('div');
-            option.classList.add("disabled");
             option.classList.add('option');
             optionList.appendChild(option);
             option.innerText = answer;
             if (viewResults) {
+                option.classList.add("disabled");
                 if (index === question.index) option.classList.add('correct');
-                else if (index === results[taskIndex].answer) option.classList.add('incorrect');
+                else if (index === results.result[taskIndex].answer) option.classList.add('incorrect');
             } else {
                 option.onclick = () => clickOption(option, index);
                 if (index === answers[taskIndex].answer) option.classList.add('selected');
