@@ -2,57 +2,63 @@
 {% block title %}yeNote{% endblock %}
 {% block content %}
 <body>
-    <div class="sign-up-in">
-        <div class="container-3">
+<div class="sign-up-in">
+    <div class="container-3">
             <span class="ye-note">
                 yeNote
             </span>
-            <span class="registration-auth">
+        <span class="registration-auth">
                 {{ 'Реєстрація' if sign_up else 'Вхід' }}
             </span>
-            <form class="all-inputs" id="sign-up-in-form">
-                {% if sign_up %}
-                    <div class="reg-auth-input-group">
-                        <label>
-                            Ім'я
-                        </label>
-                        <input id="name" class="reg-auth-input" type="text" required placeholder="Capybara"/>
-                    </div>
-                    <div class="reg-auth-input-group">
-                        <label>
-                            Прізвище
-                        </label>
-                        <input id="surname" class="reg-auth-input" type="text" required placeholder="Samotnya"/>
-                    </div>
-                    <div class="reg-auth-input-group">
-                        <label>
-                            Роль
-                        </label>
-                        <select class="reg-auth-input" id="role">
-                            <option>Студент</option>
-                            <option>Викладач</option>
-                        </select>
-                    </div>
-                {% endif %}
-                <div class="reg-auth-input-group">
-                    <label>
-                        Електронна пошта
-                    </label>
-                    <input id="email" class="reg-auth-input" type="email" required placeholder="yenote@example.com"/>
-                </div>
-                <div class="reg-auth-input-group">
-                    <label>
-                        Пароль
-                    </label>
-                    <input id="password" class="reg-auth-input" type="password" required
-                           placeholder="&middot&middot&middot&middot&middot&middot&middot"/>
-                </div>
+        <form class="all-inputs" id="sign-up-in-form">
+            {% if sign_up %}
+            <div class="reg-auth-input-group">
+                <label>
+                    Ім'я
+                </label>
+                <input id="name" class="reg-auth-input" type="text" required placeholder="Capybara"/>
+            </div>
+            <div class="reg-auth-input-group">
+                <label>
+                    Прізвище
+                </label>
+                <input id="surname" class="reg-auth-input" type="text" required placeholder="Samotnya"/>
+            </div>
+            <div class="reg-auth-input-group">
+                <label>
+                    Роль
+                </label>
+                <select class="reg-auth-input" id="role">
+                    <option>Студент</option>
+                    <option>Викладач</option>
+                </select>
+            </div>
+            {% endif %}
+            <div class="reg-auth-input-group">
+                <label>
+                    Електронна пошта
+                </label>
+                <input id="email" class="reg-auth-input" type="email" required placeholder="yenote@example.com"/>
+            </div>
+            <div class="reg-auth-input-group">
+                <label>
+                    Пароль
+                </label>
+                <input id="password" class="reg-auth-input" type="password" required
+                       placeholder="&middot&middot&middot&middot&middot&middot&middot"/>
+            </div>
             <button class="container-2-1" type="submit">
                 {{ 'Зареєструватися' if sign_up else 'Увійти' }}
             </button>
-            </form>
-        </div>
+        </form>
     </div>
+    <div style="display: flex; margin-bottom: 80px; align-items: baseline">
+        <p> {{ 'Маєте акаунт?' if sign_up else 'Ще не зареєстровані?' }}</p>
+        <button class="btn_signin_signup" onclick="redirect()">
+            {{ 'Увійти' if sign_up else 'Зареєструватися' }}
+        </button>
+    </div>
+</div>
 </body>
-    <script src="../static/js/sign_up_in.js"></script>
+<script src="../static/js/sign_up_in.js"></script>
 {% endblock %}

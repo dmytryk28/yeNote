@@ -41,11 +41,14 @@
     <title>{% block title %}Home{% endblock %}</title>
 </head>
 <header class="container-6">
-    <img class="container-4" src="поки нема"/>
+    <img class="container-4" src="../static/icon.png" width="85" height="70"/>
     <div class="text-head">
         <button class="text" id="piano-down" style="display: none">
             Піаніно
         </button>
+        <div class="text" onclick="window.location.href = '/';">
+            Головна
+        </div>
         <div class="text">
             Рандом
         </div>
@@ -90,7 +93,7 @@
             © 2024 “Самотні капібари”
         </span>
     </div>
-    <img class="ellipse-2" src="../assets/vectors/ellipse_24_x2.svg"/>
+    <img class="container-4" src="../static/icon.png" width="120" height="95"/>
     <script src="../static/js/profile_dropdown.js"></script>
     <script src="../static/js/base.js"></script>
 </footer>
