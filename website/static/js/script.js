@@ -7,8 +7,8 @@ const exitBtn = document.querySelector("footer .exit_btn");
 
 // If the task is random, update the test name and description
 if (random) {
-    document.querySelector(".test-name").textContent = 'Random Task';
-    document.querySelector(".description").textContent = 'You will see a random task from one of the 4 categories.';
+    document.querySelector(".test-name").textContent = 'Випадкові тести';
+    document.querySelector(".description").textContent = 'Ви побачите випадкові тести з 4 категорій.';
 } else {
     // Otherwise, set the name and description based on the task number
     document.querySelector(".test-name").textContent = questions[taskNum].name;
