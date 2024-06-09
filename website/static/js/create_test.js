@@ -202,7 +202,7 @@ document.getElementById('save-question').onclick = () => {
         answersDiv.querySelectorAll('input[type="radio"]').forEach((radio, index) => {
             if (radio.checked) que['index'] = index;
             que['answers'].push(inputs[index].value.trim());
-            addText(questionDiv, inputs[index].value.trim(), radio.checked, que);
+            addText(answerDiv, inputs[index].value.trim(), radio.checked, que);
         });
         questionDiv.appendChild(answerDiv);
     }
