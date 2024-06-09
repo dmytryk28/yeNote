@@ -55,18 +55,28 @@ window.onclick = function (event) {
 document.getElementById('submitModalBtn').addEventListener('click', async function () {
     const modalInputValue = document.getElementById('modalInputField').value;
     console.log('Modal input value:', modalInputValue);
+    if (modalInputValue.length === 0) return;
     try {
-        await fetch(`api/v1/students_tasks/${user._id}/${modalInputValue}`, {
+        const response = await fetch(`api/v1/students_tasks/${user._id}/${modalInputValue}`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json;charset=UTF-8'}
         });
+
+        if (response.status === 404) {
+            alert('Ви вже доєдналися до цього завдання');
+            document.getElementById('modalInputField').value = '';
+        } else if (response.ok) {
+            window.location.href = "/profile";
+        } else {
+            alert('Завдання не існує');
+            document.getElementById('modalInputField').value = '';
+        }
     } catch (error) {
-        alert('Завдання не знайдено');
-        modalInputValue.value = '';
-        return;
+        console.error('Error:', error);
+        alert('Сталася помилка під час запиту');
     }
-    window.location.href = "profile";
 });
+
 
 const container4 = document.querySelector('.container-4');
 container4.onclick = function () {

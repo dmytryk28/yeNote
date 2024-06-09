@@ -11,6 +11,8 @@ def create_user():
     if not data:
         return jsonify({"error": "No input data provided"}), 400
     new_user = user_service.create_user(data)
+    if not new_user:
+        return jsonify({"error": "User with this email exists"}), 409
     return jsonify(new_user), 201
 
 

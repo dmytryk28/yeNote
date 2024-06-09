@@ -8,6 +8,8 @@ class UserRepository:
         self.db = yenote_db
 
     def create_user(self, data):
+        if self.db.user.find_one({"email": data["email"]}):
+            return False
         user_id = self.db.user.insert_one(data).inserted_id
         new_user = self.db.user.find_one({"_id": user_id})
         new_user['_id'] = str(new_user['_id'])

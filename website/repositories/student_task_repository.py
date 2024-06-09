@@ -9,10 +9,14 @@ class StudentTaskRepository:
         self.db = yenote_db
 
     def connect_student_task(self, student_id, task_id):
-        self.db.students_tasks.insert_one({
+        ids = {
             "student_id": ObjectId(student_id),
             "task_id": ObjectId(task_id)
-        })
+        }
+        existing_document = self.db.students_tasks.find_one(ids)
+        if existing_document:
+            return False
+        self.db.students_tasks.insert_one(ids)
         return True
 
     def get_student_tasks(self, student_id):
@@ -36,19 +40,25 @@ class StudentTaskRepository:
             {
                 "$addFields": {
                     "task.sum_score": {
-                        "$sum": {
-                            "$map": {
-                                "input": "$result",
-                                "as": "r",
-                                "in": {
-                                    "$convert": {
-                                        "input": "$$r.score",
-                                        "to": "int",
-                                        "onError": 0,
-                                        "onNull": 0
+                        "$cond": {
+                            "if": {"$gt": [{"$size": {"$ifNull": ["$result", []]}}, 0]},
+                            "then": {
+                                "$sum": {
+                                    "$map": {
+                                        "input": {"$ifNull": ["$result", []]},
+                                        "as": "r",
+                                        "in": {
+                                            "$convert": {
+                                                "input": "$$r.score",
+                                                "to": "int",
+                                                "onError": 0,
+                                                "onNull": 0
+                                            }
+                                        }
                                     }
                                 }
-                            }
+                            },
+                            "else": "$$REMOVE"
                         }
                     }
                 }
@@ -84,7 +94,9 @@ class StudentTaskRepository:
                         "$sum": {
                             "$sum": {
                                 "$map": {
-                                    "input": "$result",
+                                    "input": {
+                                        "$ifNull": ["$result", []]
+                                    },
                                     "as": "r",
                                     "in": {
                                         "$convert": {
@@ -95,6 +107,15 @@ class StudentTaskRepository:
                                         }
                                     }
                                 }
+                            }
+                        }
+                    },
+                    "has_result": {
+                        "$max": {
+                            "$cond": {
+                                "if": {"$gt": [{"$size": {"$ifNull": ["$result", []]}}, 0]},
+                                "then": True,
+                                "else": False
                             }
                         }
                     }
@@ -113,7 +134,13 @@ class StudentTaskRepository:
             },
             {
                 "$addFields": {
-                    "student.sum_score": "$sum_score"
+                    "student.sum_score": {
+                        "$cond": {
+                            "if": "$has_result",
+                            "then": "$sum_score",
+                            "else": "$$REMOVE"
+                        }
+                    }
                 }
             },
             {

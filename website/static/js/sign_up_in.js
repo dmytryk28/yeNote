@@ -1,13 +1,27 @@
 // document.getElementsByClassName('container-6')[0].style.display = 'none';
 localStorage.clear();
 
+function isPasswordStrong(password) {
+    function tst(text) {return text.test(password)}
+    return password.length >= 8 && tst(/[A-Z]/) && tst(/[a-z]/)
+        && tst(/\d/) && tst(/[!@#$%^&*(),.?":{}|<>]/);
+}
+
 document.getElementById('sign-up-in-form').addEventListener('submit', event => {
     event.preventDefault();
-
+    const password = document.getElementById('password');
+    if (document.querySelector('.registration-auth').innerText.trim() === 'Реєстрація'
+        && !isPasswordStrong(password.value)) {
+        alert('Пароль має містити не менше 8 символів, зокрема великі і малі латинські літери, цифри та спеціальні символи.');
+        password.focus();
+        return;
+    }
     let formData = {};
     for (let element of document.getElementById('sign-up-in-form').elements)
-        if (element.id) formData[element.id] = element.value;
-
+        if (element.id) {
+            if (element.id === 'password') formData[element.id] = CryptoJS.SHA256(element.value).toString();
+            else formData[element.id] = element.value;
+        }
     const xhr = new XMLHttpRequest();
     const url = '../api/v1/users/'
         + (Object.keys(formData).length === 2 ? 'authenticate/' : '');
@@ -19,6 +33,8 @@ document.getElementById('sign-up-in-form').addEventListener('submit', event => {
             if (xhr.status === 201 || xhr.status === 200) {
                 localStorage.setItem('user', xhr.responseText);
                 window.location.href = '../';
+            } else if (xhr.status === 409) {
+                alert('Користувач із такою поштою вже існує');
             } else alert('Неправильні вхідні дані');
         }
     };

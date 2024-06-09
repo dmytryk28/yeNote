@@ -92,7 +92,7 @@ else for (const student of students) {
             `<div class="done-mark">${student.sum_score}/${document.getElementById('total-max-mark').innerText}</div>`);
         studentTask.onclick = () => viewStudentTask(student._id);
     } else studentTask.style.cursor = 'default';
-    studentsWithTask.insertAdjacentElement(student.sum_score ? 'afterbegin' : 'beforeend', studentTask);
+    studentsWithTask.insertAdjacentElement('sum_score' in student ? 'afterbegin' : 'beforeend', studentTask);
 }
 
 function viewStudentTask(studentId) {

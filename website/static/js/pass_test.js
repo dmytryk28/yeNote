@@ -27,8 +27,12 @@ if (viewResults) {
     startBtn.innerText = 'Переглянути';
 } else  {
     const now = new Date();
-    if (new Date(task.time_start) > now || new Date(task.time_end) < now)
-        startBtn.style.display = 'none';
+    if (new Date(task.time_start) > now) {
+        startBtn.outerHTML = '<p style="color: #ffae00; font-size: 14pt"><b>Завдання ще не можна пройти</b></p>';
+    } else if (new Date(task.time_end) < now) {
+        startBtn.outerHTML = '<p style="color: #ff2600; font-size: 14pt"><b>Завдання вже не можна пройти</b></p>';
+    }
+
 }
 
 const prevBtn = document.querySelector('.prev_btn');

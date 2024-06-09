@@ -71,6 +71,10 @@ queTypeSelect.addEventListener("change", () => {
     }
 });
 
+function getYoutubeId(youtubeLink) {
+    return youtubeLink.match(/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/)[1];
+}
+
 function mediaListeners() {
 
     document.getElementById('file-upload').addEventListener('change', function () {
@@ -102,7 +106,8 @@ function mediaListeners() {
     document.getElementById("youtube-confirm").addEventListener("click", function () {
         const youtubeLinkInput = document.getElementById("youtube-link");
         const youtubeLink = youtubeLinkInput.value.trim();
-        const youtubeId = youtubeLink.split('v=')[1];
+        const youtubeId = getYoutubeId(youtubeLink);
+        console.log(youtubeId);
         const additionalFilesDiv = document.getElementById("additional-files");
 
         if (youtubeId) {
@@ -117,6 +122,7 @@ function mediaListeners() {
             additionalFilesDiv.appendChild(iframe);
             youtubeLinkInput.style.display = "none";
             document.getElementById("youtube-confirm").style.display = "none";
+            tempYoutube = youtubeId;
         } else {
             alert("Невірне посилання на YouTube");
         }
@@ -129,7 +135,6 @@ document.getElementById('save-question').onclick = () => {
     const max_mark = document.getElementById('max-mark');
     const studentAnswer = document.getElementById('student-answer');
     const answersDiv = document.querySelector('.answer-stack');
-    const youtubeLinkInput = document.getElementById("youtube-link");
 
     if (!questionDescription.value.trim()) {
         alert('Будь ласка, введіть питання.');
@@ -176,9 +181,9 @@ document.getElementById('save-question').onclick = () => {
         tempFile = null;
     }
 
-    if (youtubeLinkInput.style.display === "none" && youtubeLinkInput.value.trim()) {
-        const youtubeLink = youtubeLinkInput.value.trim();
-        que.youtube = youtubeLink.split('v=')[1];
+    if (tempYoutube) {
+        que.youtube = tempYoutube;
+        tempYoutube = null;
     }
 
     const questionDiv = document.createElement('div');
@@ -425,3 +430,4 @@ function toggleSaveButton() {
 }
 
 let tempFile = null;
+let tempYoutube = null;
