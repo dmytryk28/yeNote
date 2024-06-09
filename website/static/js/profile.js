@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             textX = 380;
             textY = 500;
         } else if (item.color === 'rgba(105,235,54,0.7)') {
-            textX = 0;
+            textX = 380;
             textY = 30;
         }
 

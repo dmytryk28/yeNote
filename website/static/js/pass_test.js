@@ -82,6 +82,9 @@ startBtn.onclick = () => {
     quizBox.style.display = 'block';
     indexChange();
     prevBtn.style.display = 'block';
+    if(numberOfQuestions === 1){
+        nextBtn.replaceWith(endButton);
+    }
 };
 
 nextBtn.onclick = () => {

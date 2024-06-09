@@ -5,13 +5,16 @@ groupElements.forEach(element => {
         window.location.href = `/task/${id}`;
     });
 });
+
 document.addEventListener('DOMContentLoaded', function() {
     const showAllTestsButton = document.querySelector('.show-all-tests');
 
     showAllTestsButton.addEventListener('click', function() {
-        const group5Position = document.querySelector('.group-5').getBoundingClientRect().top;
+        const buttonPosition = showAllTestsButton.getBoundingClientRect().top;
+        const scrollAmount = 50; // Кількість пікселів, на яку потрібно прокрутити від кнопки
+
         window.scrollTo({
-            top: group5Position,
+            top: window.scrollY + buttonPosition - scrollAmount,
             behavior: 'smooth'
         });
     });

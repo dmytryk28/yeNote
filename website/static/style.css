@@ -139,7 +139,8 @@ header .task, header .profile, header .create_test {
     color: #E5EEFB;
 }
 
-.important, .show-all-tests, .task .important, .container-2-1, .profile .important, .create_test .important {
+.important, .show-all-tests, .task .important, .container-2-1, .profile .important, .create_test .important,
+.instruction{
     overflow-wrap: break-word;
     font-weight: 500;
     font-size: 1.5rem;
@@ -215,7 +216,8 @@ header .task, header .profile, header .create_test {
 
 .desktop-1 .group-1 {
     cursor: pointer;
-    border-radius: 2.4rem;
+    border-right: 2px solid rgba(255, 255, 255, 0.75);
+    padding-right: 4rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1038,4 +1040,14 @@ label.question-media {
 
 .btn_signin_signup:hover {
     text-decoration: underline;
+}
+
+.yenote-instruction{
+    margin-left: auto;
+}
+
+.text-instruction {
+    margin-left: 50px;
+    font-size: 36px;
+    font-weight: 500;
 }
