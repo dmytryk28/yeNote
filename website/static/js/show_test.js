@@ -1,4 +1,4 @@
-import {addText} from './create_test.js';
+import {addText, openQuestionInForm} from './create_test.js';
 
 document.querySelectorAll('input, textarea, select').forEach(el => {
     el.disabled = true;
@@ -49,6 +49,7 @@ for (const que of task.questions) {
             addText(answerDiv, que.answers[i], i === que.index, que);
         questionDiv.appendChild(answerDiv);
     }
+    questionDiv.addEventListener('click', () => openQuestionInForm(que));
     document.querySelector('.question_list').appendChild(questionDiv);
     questionDiv.insertAdjacentElement('beforebegin', questionContainerDiv);
     questionContainerDiv.appendChild(questionDiv);

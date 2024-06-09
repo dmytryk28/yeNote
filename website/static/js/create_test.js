@@ -252,7 +252,7 @@ export function addText(questionDiv, text, green, question) {
     console.log(question);
 }
 
-function openQuestionInForm(question) {
+export function openQuestionInForm(question) {
     document.getElementById('question-description').value = question.question;
     document.getElementById('max-mark').value = question.max_mark;
     document.getElementById('type-ques').value = question.type;
