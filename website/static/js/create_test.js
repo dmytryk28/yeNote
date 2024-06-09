@@ -26,7 +26,10 @@ document.getElementById("save-task").onclick = () => {
         alert('Заповніть усі поля');
         return;
     }
-
+    if (new Date(task["time_end"]) <= new Date(task["time_start"])) {
+        alert('Час кінця має бути більшим за час початку');
+        return;
+    }
     const storage = getStorage(app);
 
     const uploadTasks = task.questions.map(async (que) => {
