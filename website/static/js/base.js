@@ -82,3 +82,7 @@ const container4 = document.querySelector('.container-4');
 container4.onclick = function () {
     window.location.href = "/";
 }
+
+document.getElementById('random').onclick = () => {
+    window.location.href = '/task/100';
+};

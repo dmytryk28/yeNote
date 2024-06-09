@@ -18,13 +18,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 
     const user = JSON.parse(localStorage.getItem('user'));
-    Array.from(document.getElementsByClassName('full-name')).forEach(elem => {
-        elem.innerHTML = `${user.name} ${user.surname}`;
-    });
-    Array.from(document.getElementsByClassName('poshta')).forEach(elem => {
-        elem.innerHTML = user.email;
-    });
-
+    if (user) {
+        Array.from(document.getElementsByClassName('full-name')).forEach(elem => {
+            elem.innerHTML = `${user.name} ${user.surname}`;
+        });
+        Array.from(document.getElementsByClassName('poshta')).forEach(elem => {
+            elem.innerHTML = user.email;
+        });
+    }
     document.getElementById('profile').onclick = () => {
         window.location.href = 'http://127.0.0.1:5000/profile';
     }
