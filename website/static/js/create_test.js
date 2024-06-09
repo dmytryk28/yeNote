@@ -206,6 +206,7 @@ document.getElementById('save-question').onclick = () => {
         });
         questionDiv.appendChild(answerDiv);
     }
+    questionDiv.addEventListener('click', () => openQuestionInForm(que));
     task['questions'].push(que);
     document.querySelector('.question_list').appendChild(questionDiv);
     modal.style.display = "none";
@@ -247,7 +248,7 @@ export function addText(questionDiv, text, green, question) {
         p.style.textDecoration = 'underline';
     }
     questionDiv.appendChild(p);
-    questionDiv.addEventListener('click', () => openQuestionInForm(question));
+    // questionDiv.addEventListener('click', () => openQuestionInForm(question));
     console.log(question);
 }
 

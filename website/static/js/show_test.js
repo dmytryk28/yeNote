@@ -46,7 +46,7 @@ for (const que of task.questions) {
         answerDiv.style.display = 'flex';
         answerDiv.style.flexDirection = 'column';
         for (let i = 0; i < que.answers.length; i++)
-            addText(questionDiv, que.answers[i], i === que.index, que);
+            addText(answerDiv, que.answers[i], i === que.index, que);
         questionDiv.appendChild(answerDiv);
     }
     document.querySelector('.question_list').appendChild(questionDiv);
