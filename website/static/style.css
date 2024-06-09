@@ -216,13 +216,24 @@ header .task, header .profile, header .create_test {
 
 .desktop-1 .group-1 {
     cursor: pointer;
-    border-right: 2px solid rgba(255, 255, 255, 0.75);
-    padding-right: 4rem;
+    /*border-right: 2px solid rgba(255, 255, 255, 0.75);*/
+    /*padding-right: 4rem;*/
+    padding: 4rem 2.9rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: fit-content;
+    height: 100%;
     box-sizing: border-box;
+    transition: background-color 0.5s ease;
+}
+
+.group-1:hover {
+    background-color: #E5EEFB;
+}
+
+.group-1:hover span{
+    color: #132244;
+    font-weight: 600;
 }
 
 .desktop-1 .container-2 {
@@ -244,6 +255,12 @@ header .task, header .profile, header .create_test {
     padding: 3rem 5rem;
     width: 100vw;
     box-sizing: border-box;
+}
+
+.group-5 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 0;
 }
 
 .group-2 {
@@ -311,10 +328,10 @@ header .task, header .profile, header .create_test {
 
 .desktop-1 .category {
     overflow-wrap: break-word;
-    margin-top: 10px;
+    /*margin-top: 10px;*/
     text-align: center;
     font-weight: 400;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     color: #ffffff;
 }
 
